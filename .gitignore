@@ -1,0 +1,38 @@
+# ================================
+# LeakGuard AI - Git Ignore Rules
+# ================================
+
+# Python virtual environment
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing cache
+.pytest_cache/
+
+# Environment and secret files
+.env
+.env.*
+!.env.example
+
+# IDE files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Build files
+dist/
+build/
+
+# Future trained model artifacts
+models/
+
+# Logs
+*.log
