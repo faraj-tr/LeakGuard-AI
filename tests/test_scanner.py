@@ -58,3 +58,46 @@ def test_scanner_detects_unknown_random_candidate(tmp_path):
 
     # Raw suspicious values must never be exposed.
     assert secret not in str(findings)
+def test_scanner_detects_vite_client_secret_exposure(tmp_path):
+    secret = "LEAKGUARD_FAKE_KEY_ABC123"
+
+    env_file = tmp_path / ".env"
+
+    env_file.write_text(
+        f"VITE_OPENAI_API_KEY={secret}",
+        encoding="utf-8",
+    )
+
+    files_scanned, findings = scan_path(
+        tmp_path
+    )
+
+    assert files_scanned == 1
+    assert len(findings) == 1
+
+    finding = findings[0]
+
+    assert finding["type"] == (
+        "Client-Side Secret Exposure"
+    )
+
+    assert finding["severity"] == "CRITICAL"
+    assert finding["framework"] == "Vite"
+
+    assert secret not in str(findings)
+
+
+def test_scanner_ignores_public_vite_ui_variable(tmp_path):
+    env_file = tmp_path / ".env"
+
+    env_file.write_text(
+        "VITE_APP_TITLE=LeakGuard",
+        encoding="utf-8",
+    )
+
+    files_scanned, findings = scan_path(
+        tmp_path
+    )
+
+    assert files_scanned == 1
+    assert findings == []
