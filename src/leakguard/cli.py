@@ -15,6 +15,14 @@ app = typer.Typer(
 console = Console()
 
 
+SEVERITY_STYLES = {
+    "CRITICAL": "bold red",
+    "HIGH": "red",
+    "MEDIUM": "yellow",
+    "LOW": "cyan",
+}
+
+
 @app.callback()
 def main():
     """
@@ -40,6 +48,30 @@ def version():
     )
 
 
+def format_file_location(
+    file_path: str,
+    root: Path,
+    line_number: int,
+) -> str:
+    """
+    Display project-relative file paths when possible.
+    """
+
+    file = Path(file_path)
+
+    try:
+        relative_path = file.resolve().relative_to(
+            root.resolve()
+        )
+
+        display_path = str(relative_path)
+
+    except ValueError:
+        display_path = str(file)
+
+    return f"{display_path}:{line_number}"
+
+
 @app.command()
 def scan(
     path: Path = typer.Argument(
@@ -55,12 +87,14 @@ def scan(
         console.print(
             "[bold red]Error:[/bold red] Path does not exist."
         )
+
         raise typer.Exit(code=1)
 
     if not path.is_dir():
         console.print(
             "[bold red]Error:[/bold red] Please provide a directory."
         )
+
         raise typer.Exit(code=1)
 
     console.print()
@@ -88,9 +122,12 @@ def scan(
     console.print()
 
     if not findings:
-
         console.print(
-            "[bold green]✅ Security scan passed.[/bold green]"
+            Panel.fit(
+                "[bold green]Security scan passed.[/bold green]\n"
+                "[dim]No suspicious secret exposure was detected.[/dim]",
+                title="Gate Result",
+            )
         )
 
         return
@@ -100,29 +137,132 @@ def scan(
         show_lines=True,
     )
 
-    table.add_column("Severity")
-    table.add_column("Type")
-    table.add_column("File")
-    table.add_column("Line")
-    table.add_column("Masked Value")
+    table.add_column(
+        "Severity",
+        no_wrap=True,
+    )
+
+    table.add_column(
+        "Finding",
+    )
+
+    table.add_column(
+        "Location",
+    )
+
+    table.add_column(
+        "Framework",
+        no_wrap=True,
+    )
+
+    table.add_column(
+        "Score",
+        justify="right",
+        no_wrap=True,
+    )
+
+    table.add_column(
+        "Masked Value",
+        no_wrap=True,
+    )
 
     for finding in findings:
+        severity = finding["severity"]
+
+        severity_style = SEVERITY_STYLES.get(
+            severity,
+            "white",
+        )
+
+        location = format_file_location(
+            file_path=finding["file"],
+            root=path,
+            line_number=finding["line"],
+        )
+
+        framework = finding.get(
+            "framework"
+        ) or "-"
+
+        candidate_score = finding.get(
+            "candidate_score"
+        )
+
+        score = (
+            "-"
+            if candidate_score is None
+            else str(candidate_score)
+        )
 
         table.add_row(
-            finding["severity"],
+            f"[{severity_style}]{severity}[/{severity_style}]",
             finding["type"],
-            finding["file"],
-            str(finding["line"]),
+            location,
+            framework,
+            score,
             finding["masked_value"],
         )
 
     console.print(table)
 
+    findings_with_reasons = [
+        finding
+        for finding in findings
+        if finding.get("reasons")
+    ]
+
+    if findings_with_reasons:
+        console.print()
+
+        console.print(
+            "[bold]Detection Details[/bold]"
+        )
+
+        for finding in findings_with_reasons:
+            location = format_file_location(
+                file_path=finding["file"],
+                root=path,
+                line_number=finding["line"],
+            )
+
+            reasons = " • ".join(
+                finding["reasons"]
+            )
+
+            console.print(
+                f"[dim]{location}[/dim]\n"
+                f"  {reasons}"
+            )
+
+    critical_count = sum(
+        finding["severity"] == "CRITICAL"
+        for finding in findings
+    )
+
+    high_count = sum(
+        finding["severity"] == "HIGH"
+        for finding in findings
+    )
+
+    medium_count = sum(
+        finding["severity"] == "MEDIUM"
+        for finding in findings
+    )
+
     console.print()
 
     console.print(
-        "[bold red]⚠ Potential secret exposure detected.[/bold red]"
+        Panel.fit(
+            "[bold red]Security gate failed.[/bold red]\n\n"
+            f"Critical: [bold]{critical_count}[/bold]\n"
+            f"High: [bold]{high_count}[/bold]\n"
+            f"Medium: [bold]{medium_count}[/bold]\n\n"
+            "[dim]Resolve the findings before shipping this project.[/dim]",
+            title="Gate Result",
+        )
     )
+
+    raise typer.Exit(code=1)
 
 
 if __name__ == "__main__":
