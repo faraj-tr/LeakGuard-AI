@@ -5,6 +5,11 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from leakguard.git_hook import (
+    ExistingHookError,
+    NotGitRepositoryError,
+    install_pre_commit_hook,
+)
 from leakguard.scanner import scan_path
 
 
@@ -26,9 +31,11 @@ SEVERITY_STYLES = {
 @app.callback()
 def main():
     """
-    LeakGuard AI helps developers detect accidental secret exposure
-    before insecure code reaches production.
+    LeakGuard AI helps developers detect accidental
+    secret exposure before insecure code reaches
+    production.
     """
+
     pass
 
 
@@ -42,7 +49,10 @@ def version():
         Panel.fit(
             "[bold cyan]LeakGuard AI[/bold cyan]\n"
             "[white]Version 0.1.0[/white]\n\n"
-            "[dim]Code fast with AI. Ship without leaking secrets.[/dim]",
+            "[dim]"
+            "Code fast with AI. "
+            "Ship without leaking secrets."
+            "[/dim]",
             title="Security Gate",
         )
     )
@@ -54,22 +64,104 @@ def format_file_location(
     line_number: int,
 ) -> str:
     """
-    Display project-relative file paths when possible.
+    Display project-relative file paths
+    when possible.
     """
 
     file = Path(file_path)
 
     try:
-        relative_path = file.resolve().relative_to(
-            root.resolve()
+        relative_path = (
+            file.resolve()
+            .relative_to(
+                root.resolve()
+            )
         )
 
-        display_path = str(relative_path)
+        display_path = str(
+            relative_path
+        )
 
     except ValueError:
-        display_path = str(file)
+        display_path = str(
+            file
+        )
 
-    return f"{display_path}:{line_number}"
+    return (
+        f"{display_path}:"
+        f"{line_number}"
+    )
+
+
+@app.command("install-hook")
+def install_hook(
+    path: Path = typer.Option(
+        Path("."),
+        "--path",
+        "-p",
+        help=(
+            "Git repository where the "
+            "LeakGuard pre-commit hook "
+            "will be installed."
+        ),
+    )
+):
+    """
+    Install LeakGuard as a Git
+    pre-commit security gate.
+    """
+
+    try:
+        hook_path = (
+            install_pre_commit_hook(
+                path
+            )
+        )
+
+    except NotGitRepositoryError:
+        console.print(
+            Panel.fit(
+                "[bold red]"
+                "Git repository not found."
+                "[/bold red]\n\n"
+                "[dim]"
+                "Run this command inside "
+                "a Git repository."
+                "[/dim]",
+                title="Hook Installation",
+            )
+        )
+
+        raise typer.Exit(
+            code=1
+        )
+
+    except ExistingHookError as error:
+        console.print(
+            Panel.fit(
+                "[bold yellow]"
+                "Existing pre-commit hook detected."
+                "[/bold yellow]\n\n"
+                f"[dim]{error}[/dim]",
+                title="Hook Installation",
+            )
+        )
+
+        raise typer.Exit(
+            code=1
+        )
+
+    console.print(
+        Panel.fit(
+            "[bold green]"
+            "LeakGuard pre-commit hook installed."
+            "[/bold green]\n\n"
+            f"[dim]{hook_path}[/dim]\n\n"
+            "Every Git commit will now run "
+            "the LeakGuard security gate.",
+            title="Git Security Gate",
+        )
+    )
 
 
 @app.command()
@@ -80,43 +172,63 @@ def scan(
     )
 ):
     """
-    Scan a project directory for possible secret leaks.
+    Scan a project directory for
+    possible secret leaks.
     """
 
     if not path.exists():
         console.print(
-            "[bold red]Error:[/bold red] Path does not exist."
+            "[bold red]"
+            "Error:"
+            "[/bold red] "
+            "Path does not exist."
         )
 
-        raise typer.Exit(code=1)
+        raise typer.Exit(
+            code=1
+        )
 
     if not path.is_dir():
         console.print(
-            "[bold red]Error:[/bold red] Please provide a directory."
+            "[bold red]"
+            "Error:"
+            "[/bold red] "
+            "Please provide a directory."
         )
 
-        raise typer.Exit(code=1)
+        raise typer.Exit(
+            code=1
+        )
 
     console.print()
 
     console.print(
         Panel.fit(
-            "[bold cyan]LeakGuard AI[/bold cyan]\n"
-            "[dim]Scanning project for secret exposure...[/dim]",
+            "[bold cyan]"
+            "LeakGuard AI"
+            "[/bold cyan]\n"
+            "[dim]"
+            "Scanning project for "
+            "secret exposure..."
+            "[/dim]",
             title="Security Scan",
         )
     )
 
     console.print()
 
-    files_scanned, findings = scan_path(path)
-
-    console.print(
-        f"Files scanned: [bold]{files_scanned}[/bold]"
+    files_scanned, findings = (
+        scan_path(path)
     )
 
     console.print(
-        f"Potential findings: [bold]{len(findings)}[/bold]"
+        "Files scanned: "
+        f"[bold]{files_scanned}[/bold]"
+    )
+
+    console.print(
+        "Potential findings: "
+        f"[bold]{len(findings)}[/bold]"
     )
 
     console.print()
@@ -124,8 +236,13 @@ def scan(
     if not findings:
         console.print(
             Panel.fit(
-                "[bold green]Security scan passed.[/bold green]\n"
-                "[dim]No suspicious secret exposure was detected.[/dim]",
+                "[bold green]"
+                "Security scan passed."
+                "[/bold green]\n"
+                "[dim]"
+                "No suspicious secret exposure "
+                "was detected."
+                "[/dim]",
                 title="Gate Result",
             )
         )
@@ -167,66 +284,105 @@ def scan(
     )
 
     for finding in findings:
-        severity = finding["severity"]
+        severity = finding[
+            "severity"
+        ]
 
-        severity_style = SEVERITY_STYLES.get(
-            severity,
-            "white",
+        severity_style = (
+            SEVERITY_STYLES.get(
+                severity,
+                "white",
+            )
         )
 
-        location = format_file_location(
-            file_path=finding["file"],
-            root=path,
-            line_number=finding["line"],
+        location = (
+            format_file_location(
+                file_path=finding[
+                    "file"
+                ],
+                root=path,
+                line_number=finding[
+                    "line"
+                ],
+            )
         )
 
-        framework = finding.get(
-            "framework"
-        ) or "-"
+        framework = (
+            finding.get(
+                "framework"
+            )
+            or "-"
+        )
 
-        candidate_score = finding.get(
-            "candidate_score"
+        candidate_score = (
+            finding.get(
+                "candidate_score"
+            )
         )
 
         score = (
             "-"
             if candidate_score is None
-            else str(candidate_score)
+            else str(
+                candidate_score
+            )
         )
 
         table.add_row(
-            f"[{severity_style}]{severity}[/{severity_style}]",
+            (
+                f"[{severity_style}]"
+                f"{severity}"
+                f"[/{severity_style}]"
+            ),
             finding["type"],
             location,
             framework,
             score,
-            finding["masked_value"],
+            finding[
+                "masked_value"
+            ],
         )
 
-    console.print(table)
+    console.print(
+        table
+    )
 
     findings_with_reasons = [
         finding
         for finding in findings
-        if finding.get("reasons")
+        if finding.get(
+            "reasons"
+        )
     ]
 
     if findings_with_reasons:
         console.print()
 
         console.print(
-            "[bold]Detection Details[/bold]"
+            "[bold]"
+            "Detection Details"
+            "[/bold]"
         )
 
-        for finding in findings_with_reasons:
-            location = format_file_location(
-                file_path=finding["file"],
-                root=path,
-                line_number=finding["line"],
+        for finding in (
+            findings_with_reasons
+        ):
+            location = (
+                format_file_location(
+                    file_path=finding[
+                        "file"
+                    ],
+                    root=path,
+                    line_number=finding[
+                        "line"
+                    ],
+                )
             )
 
             reasons = " • ".join(
-                finding["reasons"]
+                finding[
+                    "reasons"
+                ]
             )
 
             console.print(
@@ -235,17 +391,20 @@ def scan(
             )
 
     critical_count = sum(
-        finding["severity"] == "CRITICAL"
+        finding["severity"]
+        == "CRITICAL"
         for finding in findings
     )
 
     high_count = sum(
-        finding["severity"] == "HIGH"
+        finding["severity"]
+        == "HIGH"
         for finding in findings
     )
 
     medium_count = sum(
-        finding["severity"] == "MEDIUM"
+        finding["severity"]
+        == "MEDIUM"
         for finding in findings
     )
 
@@ -253,16 +412,26 @@ def scan(
 
     console.print(
         Panel.fit(
-            "[bold red]Security gate failed.[/bold red]\n\n"
-            f"Critical: [bold]{critical_count}[/bold]\n"
-            f"High: [bold]{high_count}[/bold]\n"
-            f"Medium: [bold]{medium_count}[/bold]\n\n"
-            "[dim]Resolve the findings before shipping this project.[/dim]",
+            "[bold red]"
+            "Security gate failed."
+            "[/bold red]\n\n"
+            "Critical: "
+            f"[bold]{critical_count}[/bold]\n"
+            "High: "
+            f"[bold]{high_count}[/bold]\n"
+            "Medium: "
+            f"[bold]{medium_count}[/bold]\n\n"
+            "[dim]"
+            "Resolve the findings before "
+            "shipping this project."
+            "[/dim]",
             title="Gate Result",
         )
     )
 
-    raise typer.Exit(code=1)
+    raise typer.Exit(
+        code=1
+    )
 
 
 if __name__ == "__main__":

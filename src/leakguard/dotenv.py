@@ -19,16 +19,16 @@ DOTENV_ASSIGNMENT_PATTERN = re.compile(
 )
 
 
-def extract_dotenv_assignment(line: str) -> dict | None:
+def extract_dotenv_assignment(
+    line: str,
+) -> dict | None:
     """
-    Extract a variable name and value from a .env line.
+    Extract a variable name and value
+    from a dotenv-style configuration line.
 
-    Examples:
-        API_KEY=ABC123
-        API_KEY="ABC123"
-        API_KEY='ABC123'
+    Blank lines and comments are ignored.
 
-    Empty lines and comments are ignored.
+    Both quoted and unquoted values are supported.
     """
 
     stripped_line = line.strip()
@@ -39,14 +39,20 @@ def extract_dotenv_assignment(line: str) -> dict | None:
     if stripped_line.startswith("#"):
         return None
 
-    match = DOTENV_ASSIGNMENT_PATTERN.match(line)
+    match = DOTENV_ASSIGNMENT_PATTERN.match(
+        line
+    )
 
     if not match:
         return None
 
-    variable_name = match.group("variable")
+    variable_name = match.group(
+        "variable"
+    )
 
-    value = match.group("value").strip()
+    value = match.group(
+        "value"
+    ).strip()
 
     # Remove matching surrounding quotes.
     if (

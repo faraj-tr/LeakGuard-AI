@@ -1,0 +1,12 @@
+﻿# ==================================
+# LeakGuard AI - Ignore Rules
+# ==================================
+
+# Intentionally vulnerable demonstration project.
+demo_project/
+
+# Unit tests intentionally contain synthetic secrets.
+tests/
+
+# Temporary clean demonstration project.
+clean_demo/
