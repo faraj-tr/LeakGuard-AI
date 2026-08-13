@@ -12,13 +12,9 @@ from leakguard.git_hook import (
 def test_installs_pre_commit_hook(
     tmp_path,
 ):
-    git_directory = (
+    hooks_directory = (
         tmp_path
         / ".git"
-    )
-
-    hooks_directory = (
-        git_directory
         / "hooks"
     )
 
@@ -39,7 +35,12 @@ def test_installs_pre_commit_hook(
     )
 
     assert HOOK_MARKER in content
-    assert "leakguard.cli scan ." in content
+
+    assert (
+        "scan . --staged"
+        in content
+    )
+
     assert "exit 0" in content
 
 

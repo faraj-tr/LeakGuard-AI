@@ -11,6 +11,10 @@ from leakguard.git_hook import (
     install_pre_commit_hook,
 )
 from leakguard.scanner import scan_path
+from leakguard.staged import (
+    GitStagedScanError,
+    scan_staged_path,
+)
 
 
 app = typer.Typer(
@@ -31,9 +35,9 @@ SEVERITY_STYLES = {
 @app.callback()
 def main():
     """
-    LeakGuard AI helps developers detect accidental
-    secret exposure before insecure code reaches
-    production.
+    LeakGuard AI helps developers detect
+    accidental secret exposure before
+    insecure code reaches production.
     """
 
     pass
@@ -68,7 +72,9 @@ def format_file_location(
     when possible.
     """
 
-    file = Path(file_path)
+    file = Path(
+        file_path
+    )
 
     try:
         relative_path = (
@@ -119,15 +125,12 @@ def install_hook(
         )
 
     except NotGitRepositoryError:
+
         console.print(
             Panel.fit(
                 "[bold red]"
                 "Git repository not found."
-                "[/bold red]\n\n"
-                "[dim]"
-                "Run this command inside "
-                "a Git repository."
-                "[/dim]",
+                "[/bold red]",
                 title="Hook Installation",
             )
         )
@@ -137,6 +140,7 @@ def install_hook(
         )
 
     except ExistingHookError as error:
+
         console.print(
             Panel.fit(
                 "[bold yellow]"
@@ -157,8 +161,8 @@ def install_hook(
             "LeakGuard pre-commit hook installed."
             "[/bold green]\n\n"
             f"[dim]{hook_path}[/dim]\n\n"
-            "Every Git commit will now run "
-            "the LeakGuard security gate.",
+            "Only staged Git changes will "
+            "be checked before commits.",
             title="Git Security Gate",
         )
     )
@@ -169,14 +173,22 @@ def scan(
     path: Path = typer.Argument(
         ...,
         help="Project directory to scan",
-    )
+    ),
+    staged: bool = typer.Option(
+        False,
+        "--staged",
+        help=(
+            "Scan only the content staged "
+            "for the next Git commit."
+        ),
+    ),
 ):
     """
-    Scan a project directory for
-    possible secret leaks.
+    Scan a project for possible secret leaks.
     """
 
     if not path.exists():
+
         console.print(
             "[bold red]"
             "Error:"
@@ -189,6 +201,7 @@ def scan(
         )
 
     if not path.is_dir():
+
         console.print(
             "[bold red]"
             "Error:"
@@ -202,24 +215,60 @@ def scan(
 
     console.print()
 
+    mode_text = (
+        "Scanning staged Git changes..."
+        if staged
+        else (
+            "Scanning project for "
+            "secret exposure..."
+        )
+    )
+
     console.print(
         Panel.fit(
             "[bold cyan]"
             "LeakGuard AI"
             "[/bold cyan]\n"
-            "[dim]"
-            "Scanning project for "
-            "secret exposure..."
-            "[/dim]",
+            f"[dim]{mode_text}[/dim]",
             title="Security Scan",
         )
     )
 
     console.print()
 
-    files_scanned, findings = (
-        scan_path(path)
-    )
+    try:
+
+        if staged:
+
+            files_scanned, findings = (
+                scan_staged_path(
+                    path
+                )
+            )
+
+        else:
+
+            files_scanned, findings = (
+                scan_path(
+                    path
+                )
+            )
+
+    except GitStagedScanError as error:
+
+        console.print(
+            Panel.fit(
+                "[bold red]"
+                "Unable to scan staged changes."
+                "[/bold red]\n\n"
+                f"[dim]{error}[/dim]",
+                title="Git Security Gate",
+            )
+        )
+
+        raise typer.Exit(
+            code=1
+        )
 
     console.print(
         "Files scanned: "
@@ -234,6 +283,7 @@ def scan(
     console.print()
 
     if not findings:
+
         console.print(
             Panel.fit(
                 "[bold green]"
@@ -284,6 +334,7 @@ def scan(
     )
 
     for finding in findings:
+
         severity = finding[
             "severity"
         ]
@@ -356,6 +407,7 @@ def scan(
     ]
 
     if findings_with_reasons:
+
         console.print()
 
         console.print(
@@ -367,6 +419,7 @@ def scan(
         for finding in (
             findings_with_reasons
         ):
+
             location = (
                 format_file_location(
                     file_path=finding[

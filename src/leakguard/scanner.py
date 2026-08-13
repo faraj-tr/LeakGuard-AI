@@ -54,7 +54,7 @@ def is_supported_file(path: Path) -> bool:
 
 def is_dotenv_file(path: Path) -> bool:
     """
-    Check whether the file is a supported
+    Check whether a file is a supported
     environment configuration file.
     """
 
@@ -67,9 +67,7 @@ def should_skip(
     ignore_patterns: list[str],
 ) -> bool:
     """
-    Check whether a file should be skipped because
-    it belongs to a built-in ignored directory or
-    matches .leakguardignore.
+    Check whether a file should be skipped.
     """
 
     if any(
@@ -85,27 +83,20 @@ def should_skip(
     )
 
 
-def scan_file(path: Path) -> list[dict]:
+def scan_content(
+    path: Path,
+    content: str,
+) -> list[dict]:
     """
-    Scan one file for possible secret exposures.
+    Scan source content without reading it
+    directly from the working tree.
 
-    Detection priority:
-
-    1. Client-side environment exposure
-    2. Known secret patterns
-    3. Generic heuristic candidates
+    This allows LeakGuard to scan both:
+    - normal files
+    - staged Git blobs
     """
 
     findings = []
-
-    try:
-        content = path.read_text(
-            encoding="utf-8",
-            errors="ignore",
-        )
-
-    except OSError:
-        return findings
 
     for line_number, line in enumerate(
         content.splitlines(),
@@ -118,11 +109,15 @@ def scan_file(path: Path) -> list[dict]:
         # =================================
 
         if is_dotenv_file(path):
+
             dotenv_assignment = (
-                extract_dotenv_assignment(line)
+                extract_dotenv_assignment(
+                    line
+                )
             )
 
             if dotenv_assignment is not None:
+
                 variable_name = (
                     dotenv_assignment[
                         "variable_name"
@@ -135,28 +130,36 @@ def scan_file(path: Path) -> list[dict]:
                     ]
                 )
 
-                exposure = analyze_client_exposure(
-                    variable_name=variable_name,
-                    value=raw_value,
+                exposure = (
+                    analyze_client_exposure(
+                        variable_name=variable_name,
+                        value=raw_value,
+                    )
                 )
 
                 if exposure["is_risky"]:
+
                     findings.append(
                         {
                             "file": str(path),
                             "line": line_number,
                             "type": (
-                                "Client-Side Secret Exposure"
+                                "Client-Side "
+                                "Secret Exposure"
                             ),
                             "severity": exposure[
                                 "severity"
                             ],
-                            "masked_value": mask_secret(
-                                raw_value
+                            "masked_value": (
+                                mask_secret(
+                                    raw_value
+                                )
                             ),
-                            "candidate_score": exposure[
-                                "candidate_score"
-                            ],
+                            "candidate_score": (
+                                exposure[
+                                    "candidate_score"
+                                ]
+                            ),
                             "framework": exposure[
                                 "framework"
                             ],
@@ -166,8 +169,6 @@ def scan_file(path: Path) -> list[dict]:
                         }
                     )
 
-                    # Client exposure is more specific
-                    # than the generic detectors.
                     continue
 
         # =================================
@@ -178,6 +179,7 @@ def scan_file(path: Path) -> list[dict]:
         known_pattern_found = False
 
         for detector in SECRET_PATTERNS:
+
             for match in detector[
                 "pattern"
             ].finditer(line):
@@ -196,8 +198,10 @@ def scan_file(path: Path) -> list[dict]:
                         "severity": detector[
                             "severity"
                         ],
-                        "masked_value": mask_secret(
-                            raw_secret
+                        "masked_value": (
+                            mask_secret(
+                                raw_secret
+                            )
                         ),
                         "candidate_score": None,
                         "framework": None,
@@ -212,7 +216,7 @@ def scan_file(path: Path) -> list[dict]:
 
         # =================================
         # Layer 3:
-        # Generic assignment extraction
+        # Generic heuristic candidate
         # =================================
 
         assignment = extract_assignment(
@@ -264,34 +268,49 @@ def scan_file(path: Path) -> list[dict]:
     return findings
 
 
+def scan_file(
+    path: Path,
+) -> list[dict]:
+    """
+    Read and scan one file from the
+    working tree.
+    """
+
+    try:
+        content = path.read_text(
+            encoding="utf-8",
+            errors="ignore",
+        )
+
+    except OSError:
+        return []
+
+    return scan_content(
+        path=path,
+        content=content,
+    )
+
+
 def scan_path(
     root: Path,
 ) -> tuple[int, list[dict]]:
     """
-    Scan supported files inside a project directory.
-
-    .leakguardignore is loaded from the exact
-    directory being scanned.
-
-    This means scanning the repository root can
-    ignore demo_project/, while explicitly running:
-
-        leakguard scan demo_project
-
-    still scans the demo because the parent ignore
-    file is not automatically inherited.
+    Scan supported files inside a project.
     """
 
     root = root.resolve()
 
-    ignore_patterns = load_ignore_patterns(
-        root
+    ignore_patterns = (
+        load_ignore_patterns(
+            root
+        )
     )
 
     files_scanned = 0
     findings = []
 
     for path in root.rglob("*"):
+
         if not path.is_file():
             continue
 
@@ -313,4 +332,7 @@ def scan_path(
             scan_file(path)
         )
 
-    return files_scanned, findings
+    return (
+        files_scanned,
+        findings,
+    )

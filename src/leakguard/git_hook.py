@@ -13,35 +13,35 @@ PRE_COMMIT_HOOK = """#!/bin/sh
 # LeakGuard AI managed pre-commit hook
 
 echo ""
-echo "LeakGuard AI: running pre-commit security gate..."
+echo "LeakGuard AI: scanning staged changes..."
 echo ""
 
 if [ -x ".venv/Scripts/python.exe" ]; then
-    ".venv/Scripts/python.exe" -m leakguard.cli scan .
+    ".venv/Scripts/python.exe" -m leakguard.cli scan . --staged
     status=$?
 
 elif [ -x ".venv/bin/python" ]; then
-    ".venv/bin/python" -m leakguard.cli scan .
+    ".venv/bin/python" -m leakguard.cli scan . --staged
     status=$?
 
 elif command -v leakguard >/dev/null 2>&1; then
-    leakguard scan .
+    leakguard scan . --staged
     status=$?
 
 else
-    python -m leakguard.cli scan .
+    python -m leakguard.cli scan . --staged
     status=$?
 fi
 
 if [ "$status" -ne 0 ]; then
     echo ""
     echo "LeakGuard AI blocked this commit."
-    echo "Resolve the security findings before committing."
+    echo "Resolve the staged security findings before committing."
     exit "$status"
 fi
 
 echo ""
-echo "LeakGuard AI security gate passed."
+echo "LeakGuard AI staged security gate passed."
 exit 0
 """
 
@@ -58,8 +58,7 @@ class NotGitRepositoryError(Exception):
 class ExistingHookError(Exception):
     """
     Raised when a user already has a
-    pre-commit hook that LeakGuard does
-    not own.
+    pre-commit hook not owned by LeakGuard.
     """
 
     pass
@@ -69,11 +68,12 @@ def get_git_hooks_directory(
     project_root: Path,
 ) -> Path:
     """
-    Return the .git/hooks directory
-    for a Git repository.
+    Return the Git hooks directory.
     """
 
-    project_root = project_root.resolve()
+    project_root = (
+        project_root.resolve()
+    )
 
     git_directory = (
         project_root
@@ -81,6 +81,7 @@ def get_git_hooks_directory(
     )
 
     if not git_directory.is_dir():
+
         raise NotGitRepositoryError(
             "No .git directory was found."
         )
@@ -102,10 +103,8 @@ def install_pre_commit_hook(
     project_root: Path,
 ) -> Path:
     """
-    Install LeakGuard's Git pre-commit hook.
-
-    Existing hooks that were not created
-    by LeakGuard are never overwritten.
+    Install LeakGuard's staged-content
+    pre-commit security gate.
     """
 
     hooks_directory = (
@@ -132,6 +131,7 @@ def install_pre_commit_hook(
             HOOK_MARKER
             not in existing_content
         ):
+
             raise ExistingHookError(
                 "An existing pre-commit hook "
                 "was found. LeakGuard will not "
@@ -155,8 +155,6 @@ def install_pre_commit_hook(
         )
 
     except OSError:
-        # Windows may not require Unix-style
-        # executable permissions.
         pass
 
     return hook_path
