@@ -1,4 +1,4 @@
-from leakguard.scanner import scan_path
+﻿from leakguard.scanner import scan_path
 
 
 def test_scanner_detects_prefixed_password_variable(tmp_path):
@@ -15,10 +15,9 @@ def test_scanner_detects_prefixed_password_variable(tmp_path):
 
     assert files_scanned == 1
     assert len(findings) == 1
-
     assert findings[0]["type"] == "Hardcoded Password"
 
-    # The real secret must never appear in scanner results.
+    # Raw secrets must never appear in scanner results.
     assert secret not in str(findings)
 
 
@@ -34,3 +33,28 @@ def test_scanner_ignores_password_ui_text(tmp_path):
 
     assert files_scanned == 1
     assert findings == []
+
+
+def test_scanner_detects_unknown_random_candidate(tmp_path):
+    secret = "K7mP2xQ9vL4sN8zA1c"
+
+    test_file = tmp_path / "mystery.py"
+
+    test_file.write_text(
+        f'x = "{secret}"',
+        encoding="utf-8",
+    )
+
+    files_scanned, findings = scan_path(tmp_path)
+
+    assert files_scanned == 1
+    assert len(findings) == 1
+
+    finding = findings[0]
+
+    assert finding["type"] == "Unknown Secret Candidate"
+    assert finding["severity"] == "MEDIUM"
+    assert finding["candidate_score"] >= 50
+
+    # Raw suspicious values must never be exposed.
+    assert secret not in str(findings)

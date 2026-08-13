@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from leakguard.candidate import analyze_candidate
+from leakguard.extractor import extract_assignment
 from leakguard.masking import mask_secret
 from leakguard.patterns import SECRET_PATTERNS
 
@@ -57,7 +59,8 @@ def should_skip(path: Path) -> bool:
 
 def scan_file(path: Path) -> list[dict]:
     """
-    Scan one file for possible secrets.
+    Scan one file for known and unknown
+    possible secret exposures.
     """
 
     findings = []
@@ -76,6 +79,10 @@ def scan_file(path: Path) -> list[dict]:
         start=1,
     ):
 
+        known_pattern_found = False
+
+        # Layer 1:
+        # Search for known secret patterns.
         for detector in SECRET_PATTERNS:
 
             for match in detector["pattern"].finditer(line):
@@ -89,8 +96,50 @@ def scan_file(path: Path) -> list[dict]:
                         "type": detector["name"],
                         "severity": detector["severity"],
                         "masked_value": mask_secret(raw_secret),
+                        "candidate_score": None,
+                        "reasons": [],
                     }
                 )
+
+                known_pattern_found = True
+
+        # Avoid duplicate findings when a stronger
+        # known detector already matched the line.
+        if known_pattern_found:
+            continue
+
+        # Layer 2:
+        # Extract generic assignments such as:
+        # x = "something"
+        assignment = extract_assignment(line)
+
+        if assignment is None:
+            continue
+
+        variable_name = assignment["variable_name"]
+        raw_value = assignment["value"]
+
+        # Layer 3:
+        # Analyze unknown values using heuristic signals.
+        analysis = analyze_candidate(
+            variable_name=variable_name,
+            value=raw_value,
+        )
+
+        if not analysis["is_suspicious"]:
+            continue
+
+        findings.append(
+            {
+                "file": str(path),
+                "line": line_number,
+                "type": "Unknown Secret Candidate",
+                "severity": "MEDIUM",
+                "masked_value": mask_secret(raw_value),
+                "candidate_score": analysis["score"],
+                "reasons": analysis["reasons"],
+            }
+        )
 
     return findings
 
