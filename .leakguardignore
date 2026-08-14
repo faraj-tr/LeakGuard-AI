@@ -10,3 +10,7 @@ tests/
 
 # Temporary clean demonstration project.
 clean_demo/
+
+# Synthetic ML training data intentionally contains
+# secret-like values for model training and evaluation.
+data/
