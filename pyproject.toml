@@ -10,7 +10,9 @@ requires-python = ">=3.11"
 
 dependencies = [
     "typer>=0.12",
-    "rich>=13.7"
+    "rich>=13.7",
+    "pandas",
+    "scikit-learn"
 ]
 
 [project.optional-dependencies]
