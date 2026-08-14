@@ -254,7 +254,7 @@ def generate_positive_value(
             segments
         )
 
-       if sample_type == (
+    if sample_type == (
         "credential_uri_secret"
     ):
 
