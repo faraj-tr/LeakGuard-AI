@@ -15,4 +15,4 @@ clean_demo/
 # secret-like values for model training and evaluation.
 data/
 
-reports/final_benchmark_v1.json
+reports/final_benchmark_v1.jsonreports/candidate_v2_holdout_benchmark_v1.json
