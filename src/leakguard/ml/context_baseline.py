@@ -7,6 +7,9 @@ from sklearn.preprocessing import StandardScaler
 from leakguard.ml.baseline import (
     FEATURE_COLUMNS,
 )
+from leakguard.ml.candidate_v2_metadata import (
+    looks_like_safe_hash_metadata,
+)
 from leakguard.ml.context_features import (
     extract_context_features,
 )
@@ -32,9 +35,15 @@ CONTEXT_ONLY_COLUMNS = [
 ]
 
 
+CANDIDATE_V2_EXTRA_COLUMNS = [
+    "looks_like_safe_hash_metadata",
+]
+
+
 CONTEXT_FEATURE_COLUMNS = (
     FEATURE_COLUMNS
     + CONTEXT_ONLY_COLUMNS
+    + CANDIDATE_V2_EXTRA_COLUMNS
 )
 
 
@@ -64,13 +73,24 @@ def build_context_feature_frame(
     ].itertuples(
         index=False
     ):
+        variable_name = str(
+            row.variable_name
+        )
+
+        value = str(
+            row.value
+        )
+
         features = extract_context_features(
-            variable_name=str(
-                row.variable_name
-            ),
-            value=str(
-                row.value
-            ),
+            variable_name=variable_name,
+            value=value,
+        )
+
+        features[
+            "looks_like_safe_hash_metadata"
+        ] = looks_like_safe_hash_metadata(
+            variable_name=variable_name,
+            value=value,
         )
 
         records.append(
@@ -139,10 +159,8 @@ def evaluate_context_generalization(
     development_dataframe: pd.DataFrame,
 ) -> GeneralizationResult:
     """
-    Train on Synthetic Dataset v2 and
-    evaluate on Challenge Dataset v1.
-
-    Challenge v1 is development data only.
+    Train on Candidate v2 training data and
+    evaluate on supplied development data.
     """
 
     X_train = build_context_feature_frame(
