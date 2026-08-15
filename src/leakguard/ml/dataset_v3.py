@@ -62,6 +62,14 @@ NEUTRAL_NAMES = (
 )
 
 
+SECRET_IDENTIFIER_NAMES = (
+    "session_id",
+    "auth_session_id",
+    "private_reference",
+    "credential_reference",
+)
+
+
 PASS_PHRASE_WORDS = (
     "amber",
     "bridge",
@@ -121,17 +129,41 @@ def random_hex(
     )
 
 
+def random_tag(
+    rng: random.Random,
+    length: int = 8,
+) -> str:
+    """
+    Generate a deterministic short tag used
+    to diversify safe template examples.
+    """
+
+    return random_text(
+        rng,
+        string.ascii_lowercase
+        + string.digits,
+        length,
+    )
+
+
 def random_base64url(
     rng: random.Random,
     byte_length: int,
 ) -> str:
     raw = bytes(
-        rng.randrange(0, 256)
-        for _ in range(byte_length)
+        rng.randrange(
+            0,
+            256,
+        )
+        for _ in range(
+            byte_length
+        )
     )
 
     return (
-        base64.urlsafe_b64encode(raw)
+        base64.urlsafe_b64encode(
+            raw
+        )
         .decode("ascii")
         .rstrip("=")
     )
@@ -142,16 +174,35 @@ def random_uuid(
 ) -> str:
     return str(
         uuid.UUID(
-            int=rng.getrandbits(128)
+            int=rng.getrandbits(
+                128
+            )
         )
     )
 
 
-def choose_name(
+def choose_positive_name(
     rng: random.Random,
-    sensitive_probability: float,
 ) -> str:
-    if rng.random() < sensitive_probability:
+    """
+    Give positive samples a mixture of:
+
+    - identifier-like names
+    - sensitive names
+    - neutral names
+
+    This prevents identifier-like names
+    from becoming an automatic safe signal.
+    """
+
+    roll = rng.random()
+
+    if roll < 0.15:
+        return rng.choice(
+            SECRET_IDENTIFIER_NAMES
+        )
+
+    if roll < 0.50:
         return rng.choice(
             SENSITIVE_NAMES
         )
@@ -169,12 +220,18 @@ def generate_passphrase(
             PASS_PHRASE_WORDS
         )
         for _ in range(
-            rng.choice((4, 5, 6))
+            rng.choice(
+                (4, 5, 6)
+            )
         )
     ]
 
     separator = rng.choice(
-        ("-", ".", " ")
+        (
+            "-",
+            ".",
+            " ",
+        )
     )
 
     return separator.join(
@@ -190,12 +247,17 @@ def generate_safe_phrase(
             SAFE_PHRASE_WORDS
         )
         for _ in range(
-            rng.choice((4, 5))
+            rng.choice(
+                (4, 5)
+            )
         )
     ]
 
     separator = rng.choice(
-        ("-", " ")
+        (
+            "-",
+            " ",
+        )
     )
 
     return separator.join(
@@ -229,19 +291,22 @@ def generate_positive_sample(
     rng: random.Random,
 ) -> dict:
     sample_type = POSITIVE_TYPES[
-        index % len(
+        index
+        % len(
             POSITIVE_TYPES
         )
     ]
 
-    variable_name = choose_name(
-        rng=rng,
-        sensitive_probability=0.45,
+    variable_name = (
+        choose_positive_name(
+            rng
+        )
     )
 
     framework = "none"
 
     if sample_type == "random_secret":
+
         value = random_text(
             rng,
             (
@@ -252,38 +317,62 @@ def generate_positive_sample(
             32,
         )
 
-    elif sample_type == "passphrase_secret":
+    elif sample_type == (
+        "passphrase_secret"
+    ):
+
         value = generate_passphrase(
             rng
         )
 
-    elif sample_type == "jwt_like_secret":
+    elif sample_type == (
+        "jwt_like_secret"
+    ):
+
         value = generate_jwt_like(
             rng
         )
 
     elif sample_type == "hex_secret":
+
         value = random_hex(
             rng,
             rng.choice(
-                (32, 40, 48, 64)
+                (
+                    32,
+                    40,
+                    48,
+                    64,
+                )
             ),
         )
 
-    elif sample_type == "uuid_shaped_secret":
+    elif sample_type == (
+        "uuid_shaped_secret"
+    ):
+
         value = random_uuid(
             rng
         )
 
-    elif sample_type == "hash_shaped_secret":
+    elif sample_type == (
+        "hash_shaped_secret"
+    ):
+
         value = random_hex(
             rng,
             rng.choice(
-                (40, 64)
+                (
+                    40,
+                    64,
+                )
             ),
         )
 
-    elif sample_type == "client_exposed_secret":
+    elif sample_type == (
+        "client_exposed_secret"
+    ):
+
         framework = rng.choice(
             (
                 "Vite",
@@ -292,13 +381,16 @@ def generate_positive_sample(
         )
 
         if framework == "Vite":
+
             variable_name = rng.choice(
                 (
                     "VITE_API_KEY",
                     "VITE_CLIENT_SECRET",
                 )
             )
+
         else:
+
             variable_name = rng.choice(
                 (
                     "NEXT_PUBLIC_API_KEY",
@@ -317,8 +409,9 @@ def generate_positive_sample(
         )
 
     else:
+
         raise ValueError(
-            f"Unknown positive type: "
+            "Unknown positive type: "
             f"{sample_type}"
         )
 
@@ -337,14 +430,22 @@ def generate_negative_sample(
     rng: random.Random,
 ) -> dict:
     sample_type = NEGATIVE_TYPES[
-        index % len(
+        index
+        % len(
             NEGATIVE_TYPES
         )
     ]
 
     framework = "none"
 
-    if sample_type == "uuid_identifier":
+    tag = random_tag(
+        rng
+    )
+
+    if sample_type == (
+        "uuid_identifier"
+    ):
+
         variable_name = rng.choice(
             (
                 "request_id",
@@ -357,15 +458,23 @@ def generate_negative_sample(
             rng
         )
 
-    elif sample_type == "commit_hash":
-        variable_name = "commit_sha"
+    elif sample_type == (
+        "commit_hash"
+    ):
+
+        variable_name = (
+            "commit_sha"
+        )
 
         value = random_hex(
             rng,
             40,
         )
 
-    elif sample_type == "artifact_digest":
+    elif sample_type == (
+        "artifact_digest"
+    ):
+
         variable_name = rng.choice(
             (
                 "artifact_digest",
@@ -379,7 +488,10 @@ def generate_negative_sample(
             64,
         )
 
-    elif sample_type == "public_identifier":
+    elif sample_type == (
+        "public_identifier"
+    ):
+
         variable_name = rng.choice(
             (
                 "public_id",
@@ -397,39 +509,72 @@ def generate_negative_sample(
             26,
         )
 
-    elif sample_type == "secret_reference":
+    elif sample_type == (
+        "secret_reference"
+    ):
+
         variable_name = rng.choice(
             SENSITIVE_NAMES
         )
 
         value = rng.choice(
             (
-                "${API_KEY}",
-                "${DATABASE_PASSWORD}",
-                "$env:ACCESS_TOKEN",
-                "process.env.CLIENT_SECRET",
-                "vault://application/key",
-                "%SERVICE_TOKEN%",
+                f"${{API_KEY_{tag.upper()}}}",
+                f"${{DATABASE_PASSWORD_{tag.upper()}}}",
+                f"$env:ACCESS_TOKEN_{tag.upper()}",
+                (
+                    "process.env."
+                    f"CLIENT_SECRET_{tag.upper()}"
+                ),
+                (
+                    "vault://application/key/"
+                    f"{tag}"
+                ),
+                f"%SERVICE_TOKEN_{tag.upper()}%",
             )
         )
 
-    elif sample_type == "placeholder":
+    elif sample_type == (
+        "placeholder"
+    ):
+
         variable_name = rng.choice(
             SENSITIVE_NAMES
         )
 
         value = rng.choice(
             (
-                "YOUR_API_KEY_HERE",
-                "EXAMPLE_ONLY_DO_NOT_USE",
-                "replace-me",
-                "sample-secret-value",
-                "<redacted>",
-                "TOKEN_PLACEHOLDER",
+                (
+                    "YOUR_API_KEY_HERE_"
+                    f"{tag.upper()}"
+                ),
+                (
+                    "EXAMPLE_ONLY_DO_NOT_USE_"
+                    f"{tag.upper()}"
+                ),
+                (
+                    "replace-me-"
+                    f"{tag}"
+                ),
+                (
+                    "sample-secret-value-"
+                    f"{tag}"
+                ),
+                (
+                    "<redacted-"
+                    f"{tag}>"
+                ),
+                (
+                    "TOKEN_PLACEHOLDER_"
+                    f"{tag.upper()}"
+                ),
             )
         )
 
-    elif sample_type == "documentation_jwt":
+    elif sample_type == (
+        "documentation_jwt"
+    ):
+
         variable_name = rng.choice(
             (
                 "jwt_example",
@@ -442,7 +587,10 @@ def generate_negative_sample(
             rng
         )
 
-    elif sample_type == "safe_phrase":
+    elif sample_type == (
+        "safe_phrase"
+    ):
+
         variable_name = rng.choice(
             (
                 "deployment_mode",
@@ -455,7 +603,10 @@ def generate_negative_sample(
             rng
         )
 
-    elif sample_type == "frontend_public_value":
+    elif sample_type == (
+        "frontend_public_value"
+    ):
+
         framework = rng.choice(
             (
                 "Vite",
@@ -464,15 +615,18 @@ def generate_negative_sample(
         )
 
         if framework == "Vite":
+
             variable_name = (
                 "VITE_PUBLIC_REGION"
             )
+
         else:
+
             variable_name = (
                 "NEXT_PUBLIC_RELEASE_CHANNEL"
             )
 
-        value = rng.choice(
+        base_value = rng.choice(
             (
                 "stable",
                 "preview",
@@ -481,8 +635,15 @@ def generate_negative_sample(
             )
         )
 
-    elif sample_type == "normal_config":
-        variable_name = rng.choice(
+        value = (
+            f"{base_value}-{tag}"
+        )
+
+    elif sample_type == (
+        "normal_config"
+    ):
+
+        config_type = rng.choice(
             (
                 "log_level",
                 "environment",
@@ -491,18 +652,65 @@ def generate_negative_sample(
             )
         )
 
-        value = rng.choice(
-            (
-                "debug",
-                "production",
-                "https://example.test/api",
-                "enabled",
+        if config_type == "log_level":
+
+            variable_name = (
+                f"worker_{tag}_log_level"
             )
-        )
+
+            value = rng.choice(
+                (
+                    "debug",
+                    "info",
+                    "warning",
+                    "error",
+                )
+            )
+
+        elif config_type == "environment":
+
+            variable_name = (
+                "environment"
+            )
+
+            value = rng.choice(
+                (
+                    f"development-{tag}",
+                    f"staging-{tag}",
+                    f"production-{tag}",
+                )
+            )
+
+        elif config_type == "service_url":
+
+            variable_name = (
+                "service_url"
+            )
+
+            value = (
+                "https://service-"
+                f"{tag}"
+                ".example.test/api"
+            )
+
+        else:
+
+            variable_name = (
+                f"feature_{tag}_mode"
+            )
+
+            value = rng.choice(
+                (
+                    "enabled",
+                    "disabled",
+                    "preview",
+                )
+            )
 
     else:
+
         raise ValueError(
-            f"Unknown negative type: "
+            "Unknown negative type: "
             f"{sample_type}"
         )
 
@@ -519,19 +727,64 @@ def generate_negative_sample(
 def add_features(
     sample: dict,
 ) -> dict:
-    features = extract_context_features(
-        variable_name=sample[
-            "variable_name"
-        ],
-        value=sample[
-            "value"
-        ],
+    features = (
+        extract_context_features(
+            variable_name=sample[
+                "variable_name"
+            ],
+            value=sample[
+                "value"
+            ],
+        )
     )
 
     return {
         **sample,
         **features,
     }
+
+
+def generate_unique_sample(
+    generator,
+    index: int,
+    rng: random.Random,
+    seen_candidates: set,
+) -> dict:
+    """
+    Generate a sample whose variable-name
+    and value pair has not appeared before.
+    """
+
+    for _ in range(
+        100
+    ):
+
+        sample = generator(
+            index=index,
+            rng=rng,
+        )
+
+        candidate = (
+            sample["variable_name"],
+            sample["value"],
+        )
+
+        if candidate not in (
+            seen_candidates
+        ):
+
+            seen_candidates.add(
+                candidate
+            )
+
+            return add_features(
+                sample
+            )
+
+    raise RuntimeError(
+        "Unable to generate a unique "
+        "candidate after 100 attempts."
+    )
 
 
 def generate_synthetic_dataset_v3(
@@ -543,12 +796,13 @@ def generate_synthetic_dataset_v3(
     """
     Generate Candidate v2 training data.
 
-    Dataset v3 intentionally gives multiple
-    contextual structures support in both
-    classes to reduce shortcut learning.
+    Dataset v3 intentionally provides
+    overlapping structures across labels
+    and guarantees unique candidate pairs.
     """
 
     if samples_per_class <= 0:
+
         raise ValueError(
             "samples_per_class must "
             "be greater than zero."
@@ -560,24 +814,35 @@ def generate_synthetic_dataset_v3(
 
     records = []
 
+    seen_candidates = set()
+
     for index in range(
         samples_per_class
     ):
+
         records.append(
-            add_features(
-                generate_positive_sample(
-                    index=index,
-                    rng=rng,
-                )
+            generate_unique_sample(
+                generator=(
+                    generate_positive_sample
+                ),
+                index=index,
+                rng=rng,
+                seen_candidates=(
+                    seen_candidates
+                ),
             )
         )
 
         records.append(
-            add_features(
-                generate_negative_sample(
-                    index=index,
-                    rng=rng,
-                )
+            generate_unique_sample(
+                generator=(
+                    generate_negative_sample
+                ),
+                index=index,
+                rng=rng,
+                seen_candidates=(
+                    seen_candidates
+                ),
             )
         )
 

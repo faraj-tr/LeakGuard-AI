@@ -245,3 +245,64 @@ def test_dataset_v3_rejects_invalid_size():
             samples_per_class=0,
             seed=1337,
         )
+
+
+def test_dataset_v3_has_no_duplicate_candidates():
+    dataframe = (
+        generate_synthetic_dataset_v3(
+            samples_per_class=500,
+            seed=1337,
+        )
+    )
+
+    duplicate_count = int(
+        dataframe.duplicated(
+            subset=[
+                "variable_name",
+                "value",
+            ]
+        ).sum()
+    )
+
+    assert duplicate_count == 0
+
+
+def test_identifier_names_appear_in_both_classes():
+    dataframe = (
+        generate_synthetic_dataset_v3(
+            samples_per_class=500,
+            seed=1337,
+        )
+    )
+
+    safe_identifier_names = dataframe[
+        (
+            dataframe["label"] == 0
+        )
+        & (
+            dataframe[
+                "has_identifier_name"
+            ]
+            == 1
+        )
+    ]
+
+    secret_identifier_names = dataframe[
+        (
+            dataframe["label"] == 1
+        )
+        & (
+            dataframe[
+                "has_identifier_name"
+            ]
+            == 1
+        )
+    ]
+
+    assert len(
+        safe_identifier_names
+    ) > 0
+
+    assert len(
+        secret_identifier_names
+    ) > 0
