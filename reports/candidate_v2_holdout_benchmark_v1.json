@@ -1,0 +1,48 @@
+{
+  "benchmark_name": "LeakGuard Candidate v2 Independent Holdout Benchmark v1",
+  "datasets": {
+    "development": {
+      "purpose": "development and fusion tuning only",
+      "samples": 600,
+      "sha256": "02940249dce60658fd041e7b7a77a10b439fe79273f2b93cfccbbaf3d0d83bf2",
+      "source": "candidate_v2_dev_v1"
+    },
+    "holdout": {
+      "purpose": "independent locked evaluation only",
+      "samples": 800,
+      "sha256": "391d75e8a0fa5bc8776e5f466388c527d228a4cbef5debd96a5714843ff93bf7",
+      "source": "candidate_v2_holdout_v1"
+    },
+    "training": {
+      "samples": 2000,
+      "sha256": "e19ed8176cf3c00d2465c62d298375ba9bf51207656f0b411b09ff04aa991e83",
+      "source": "synthetic_v3"
+    }
+  },
+  "evaluation_policy": {
+    "do_not_retune_from_holdout": true,
+    "final_challenge_v2_used": false,
+    "holdout_used_for_training": false,
+    "holdout_used_for_tuning": false,
+    "parameters_locked_before_holdout": true
+  },
+  "locked_configuration": {
+    "context_weight": 0.3,
+    "minimum_development_recall": 0.98,
+    "selection_policy": "Require recall >= 0.98, then maximize precision, then F1, then minimize false positives.",
+    "text_weight": 0.7,
+    "threshold": 0.5
+  },
+  "metrics": {
+    "accuracy": 0.79875,
+    "f1": 0.8138728323699422,
+    "false_negatives": 48,
+    "false_positives": 113,
+    "precision": 0.7569892473118279,
+    "recall": 0.88,
+    "roc_auc": 0.89615,
+    "true_negatives": 287,
+    "true_positives": 352
+  },
+  "model": "LeakGuard Candidate v2 Locked Late Fusion"
+}
