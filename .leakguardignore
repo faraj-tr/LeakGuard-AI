@@ -14,3 +14,5 @@ clean_demo/
 # Synthetic ML training data intentionally contains
 # secret-like values for model training and evaluation.
 data/
+
+reports/final_benchmark_v1.json
