@@ -1,10 +1,15 @@
-﻿from pathlib import Path
+from pathlib import Path
 
 import typer
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from leakguard.config import (
+    LeakGuardConfigError,
+    load_leakguard_config,
+    resolve_ml_advisory,
+)
 from leakguard.git_hook import (
     ExistingHookError,
     NotGitRepositoryError,
@@ -236,9 +241,16 @@ def scan(
         False,
         "--ml-advisory",
         help=(
-            "Enable the experimental "
-            "Candidate v2 ML advisory signal. "
-            "ML does not gain blocking authority."
+            "Force-enable the experimental "
+            "Candidate v2 ML advisory signal."
+        ),
+    ),
+    no_ml_advisory: bool = typer.Option(
+        False,
+        "--no-ml-advisory",
+        help=(
+            "Force-disable Candidate v2 "
+            "ML advisory for this scan."
         ),
     ),
 ):
@@ -272,9 +284,74 @@ def scan(
             code=1
         )
 
-    ml_runtime = None
+    if (
+        ml_advisory
+        and no_ml_advisory
+    ):
+
+        console.print(
+            Panel.fit(
+                "[bold red]"
+                "Conflicting ML options."
+                "[/bold red]\n\n"
+                "[dim]"
+                "--ml-advisory and "
+                "--no-ml-advisory cannot "
+                "be used together."
+                "[/dim]",
+                title="Configuration",
+            )
+        )
+
+        raise typer.Exit(
+            code=2
+        )
 
     if ml_advisory:
+        cli_ml_override = True
+
+    elif no_ml_advisory:
+        cli_ml_override = False
+
+    else:
+        cli_ml_override = None
+
+    try:
+        configuration = (
+            load_leakguard_config(
+                path
+            )
+        )
+
+    except LeakGuardConfigError as error:
+
+        console.print(
+            Panel.fit(
+                "[bold red]"
+                "Invalid LeakGuard "
+                "configuration."
+                "[/bold red]\n\n"
+                f"[dim]{error}[/dim]",
+                title="Configuration",
+            )
+        )
+
+        raise typer.Exit(
+            code=2
+        )
+
+    ml_advisory_enabled = (
+        resolve_ml_advisory(
+            cli_override=(
+                cli_ml_override
+            ),
+            config=configuration,
+        )
+    )
+
+    ml_runtime = None
+
+    if ml_advisory_enabled:
 
         try:
             ml_runtime = (
@@ -323,7 +400,7 @@ def scan(
         )
     )
 
-    if ml_advisory:
+    if ml_advisory_enabled:
 
         console.print(
             "[dim]"
@@ -645,5 +722,3 @@ def scan(
 
 if __name__ == "__main__":
     app()
-
-

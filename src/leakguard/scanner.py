@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 from typing import Any
 
 from leakguard.candidate import analyze_candidate
@@ -125,6 +125,15 @@ def scan_content(
     ML does not create, remove, suppress,
     or escalate deterministic findings.
     """
+
+    # UTF-8 BOM may be emitted by Windows
+    # editors or PowerShell. Normalize it
+    # once at the content boundary so every
+    # detection layer sees the real first
+    # character while preserving line numbers.
+    content = content.removeprefix(
+        "\ufeff"
+    )
 
     findings = []
 

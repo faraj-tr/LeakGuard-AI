@@ -1,0 +1,9 @@
+﻿# LeakGuard AI project configuration
+#
+# Candidate v2 is an experimental advisory
+# signal only. It never has independent
+# blocking authority.
+
+[ml]
+enabled = false
+mode = "advisory"
