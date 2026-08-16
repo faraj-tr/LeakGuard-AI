@@ -1,4 +1,4 @@
-﻿import subprocess
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -340,10 +340,13 @@ def scan_staged_path(
         )
     )
 
-    staged_files = (
+    staged_files = sorted(
         get_staged_files(
             root
-        )
+        ),
+        key=lambda candidate: (
+            candidate.as_posix()
+        ),
     )
 
     staged_modes = (

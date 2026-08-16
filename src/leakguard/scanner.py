@@ -420,6 +420,10 @@ def scan_content(
         # Inline secret patterns
         # =================================
 
+        seen_inline_secret_keys: set[
+            tuple[str, str]
+        ] = set()
+
         for detector in (
             INLINE_SECRET_PATTERNS
         ):
@@ -432,6 +436,21 @@ def scan_content(
 
                 raw_secret = match.group(
                     "secret"
+                )
+
+                secret_key = (
+                    detector["name"],
+                    raw_secret,
+                )
+
+                if (
+                    secret_key
+                    in seen_inline_secret_keys
+                ):
+                    continue
+
+                seen_inline_secret_keys.add(
+                    secret_key
                 )
 
                 findings.append(
@@ -672,7 +691,16 @@ def scan_path(
     files_scanned = 0
     findings = []
 
-    for path in root.rglob("*"):
+    project_paths = sorted(
+        root.rglob("*"),
+        key=lambda candidate: (
+            candidate
+            .relative_to(root)
+            .as_posix()
+        ),
+    )
+
+    for path in project_paths:
 
         # Inspect symbolic-link metadata before
         # is_file(), because is_file() follows
