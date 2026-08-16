@@ -8,25 +8,9 @@ from leakguard.ml.candidate_v2_artifact import (
     ArtifactIntegrityError,
     load_candidate_v2_artifact,
 )
-
-
-LEAKGUARD_REPOSITORY_ROOT = (
-    Path(__file__)
-    .resolve()
-    .parents[3]
-)
-
-
-DEFAULT_CANDIDATE_V2_ARTIFACT_PATH = (
-    LEAKGUARD_REPOSITORY_ROOT
-    / "models"
-    / "candidate_v2_advisory_v1.pkl"
-)
-
-
-EXPECTED_CANDIDATE_V2_ARTIFACT_SHA256 = (
-    "a43e841c1b01468fe02fa084c3b665a9"
-    "6f3d74b8bdb57a622697067c3f9e96e5"
+from leakguard.ml.candidate_v2_distribution import (
+    EXPECTED_CANDIDATE_V2_ARTIFACT_SHA256,
+    get_candidate_v2_artifact_path,
 )
 
 
@@ -40,22 +24,28 @@ class CandidateV2RuntimeError(Exception):
 
 
 def load_frozen_candidate_v2_runtime(
-    artifact_path: Path = (
-        DEFAULT_CANDIDATE_V2_ARTIFACT_PATH
-    ),
+    artifact_path: Path | None = None,
 ) -> CandidateV2AdvisoryRuntime:
     """
-    Load the frozen Candidate v2 advisory
-    artifact after verifying its trusted
-    SHA-256 identity.
+    Load the trusted Candidate v2 advisory
+    artifact.
 
-    SHA-256 verification occurs before
-    unpickling inside the artifact loader.
+    The expected SHA-256 identity is frozen
+    in LeakGuard code and verification occurs
+    before unpickling.
     """
+
+    resolved_path = (
+        get_candidate_v2_artifact_path()
+        if artifact_path is None
+        else Path(
+            artifact_path
+        )
+    )
 
     try:
         return load_candidate_v2_artifact(
-            artifact_path=artifact_path,
+            artifact_path=resolved_path,
             expected_sha256=(
                 EXPECTED_CANDIDATE_V2_ARTIFACT_SHA256
             ),

@@ -2,10 +2,10 @@
 
 import pytest
 
-from leakguard.ml.candidate_v2_runtime import (
-    DEFAULT_CANDIDATE_V2_ARTIFACT_PATH,
+from leakguard.ml.candidate_v2_distribution import (
     EXPECTED_CANDIDATE_V2_ARTIFACT_SHA256,
-    LEAKGUARD_REPOSITORY_ROOT,
+)
+from leakguard.ml.candidate_v2_runtime import (
     CandidateV2RuntimeError,
     load_frozen_candidate_v2_runtime,
 )
@@ -19,34 +19,6 @@ def test_frozen_artifact_identity_is_sha256():
     int(
         EXPECTED_CANDIDATE_V2_ARTIFACT_SHA256,
         16,
-    )
-
-
-def test_default_artifact_path_is_versioned():
-    assert (
-        DEFAULT_CANDIDATE_V2_ARTIFACT_PATH.name
-        == "candidate_v2_advisory_v1.pkl"
-    )
-
-    assert (
-        DEFAULT_CANDIDATE_V2_ARTIFACT_PATH.parent.name
-        == "models"
-    )
-
-
-def test_default_artifact_path_is_absolute():
-    assert (
-        DEFAULT_CANDIDATE_V2_ARTIFACT_PATH
-        .is_absolute()
-    )
-
-    assert (
-        DEFAULT_CANDIDATE_V2_ARTIFACT_PATH
-        == (
-            LEAKGUARD_REPOSITORY_ROOT
-            / "models"
-            / "candidate_v2_advisory_v1.pkl"
-        )
     )
 
 
@@ -86,3 +58,51 @@ def test_tampered_artifact_fails_integrity_before_load(
         load_frozen_candidate_v2_runtime(
             artifact_path=tampered
         )
+
+
+def test_explicit_artifact_path_is_supported(
+    tmp_path,
+):
+    missing = (
+        tmp_path
+        / "explicit-model.pkl"
+    )
+
+    assert isinstance(
+        missing,
+        Path,
+    )
+
+    with pytest.raises(
+        CandidateV2RuntimeError
+    ):
+        load_frozen_candidate_v2_runtime(
+            artifact_path=missing
+        )
+
+
+def test_runtime_error_does_not_expose_binary_content(
+    tmp_path,
+):
+    artifact = (
+        tmp_path
+        / "candidate-v2.pkl"
+    )
+
+    artifact.write_bytes(
+        b"dangerous-untrusted-content"
+    )
+
+    with pytest.raises(
+        CandidateV2RuntimeError
+    ) as error:
+        load_frozen_candidate_v2_runtime(
+            artifact_path=artifact
+        )
+
+    assert (
+        "dangerous-untrusted-content"
+        not in str(
+            error.value
+        )
+    )

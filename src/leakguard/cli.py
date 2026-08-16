@@ -14,6 +14,7 @@ from leakguard.ml.candidate_v2_runtime import (
     CandidateV2RuntimeError,
     load_frozen_candidate_v2_runtime,
 )
+from leakguard.model_cli import model_app
 from leakguard.scanner import scan_path
 from leakguard.staged import (
     GitStagedScanError,
@@ -26,6 +27,11 @@ app = typer.Typer(
 )
 
 console = Console()
+
+app.add_typer(
+    model_app,
+    name="model",
+)
 
 
 SEVERITY_STYLES = {
@@ -639,4 +645,5 @@ def scan(
 
 if __name__ == "__main__":
     app()
+
 
