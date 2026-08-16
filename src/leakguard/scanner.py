@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 from typing import Any
 
 from leakguard.candidate import analyze_candidate
@@ -17,6 +17,11 @@ from leakguard.patterns import (
     ASSIGNMENT_SECRET_PATTERNS,
     INLINE_SECRET_PATTERNS,
     matches_assignment_secret,
+)
+from leakguard.scan_safety import (
+    build_scan_limitation_finding,
+    evaluate_content_bytes,
+    evaluate_file_size,
 )
 
 
@@ -504,18 +509,70 @@ def scan_file(
     ml_advisory_runtime: Any | None = None,
 ) -> list[dict]:
     """
-    Read and scan one file from the
-    working tree.
+    Read and scan one working-tree file.
+
+    Supported files are checked for size and
+    binary content before text scanning.
+
+    Coverage limitations fail closed instead
+    of being silently ignored.
     """
 
     try:
-        content = path.read_text(
-            encoding="utf-8",
-            errors="ignore",
+        file_size = (
+            path.stat()
+            .st_size
         )
 
     except OSError:
         return []
+
+    size_result = evaluate_file_size(
+        file_size
+    )
+
+    if not size_result.safe_to_scan:
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    size_result.reason
+                    or "File could not be "
+                    "scanned safely."
+                ),
+            )
+        ]
+
+    try:
+        raw_content = (
+            path.read_bytes()
+        )
+
+    except OSError:
+        return []
+
+    content_result = (
+        evaluate_content_bytes(
+            raw_content
+        )
+    )
+
+    if not content_result.safe_to_scan:
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    content_result.reason
+                    or "File could not be "
+                    "scanned safely."
+                ),
+            )
+        ]
+
+    content = raw_content.decode(
+        "utf-8",
+        errors="ignore",
+    )
 
     return scan_content(
         path=path,
@@ -524,7 +581,6 @@ def scan_file(
             ml_advisory_runtime
         ),
     )
-
 
 def scan_path(
     root: Path,

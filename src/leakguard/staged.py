@@ -5,6 +5,11 @@ from typing import Any
 from leakguard.ignore import (
     load_ignore_patterns,
 )
+from leakguard.scan_safety import (
+    build_scan_limitation_finding,
+    evaluate_content_bytes,
+    evaluate_file_size,
+)
 from leakguard.scanner import (
     is_supported_file,
     scan_content,
@@ -89,7 +94,9 @@ def get_staged_files(
 
     staged_files = []
 
-    for raw_path in output.split(b"\0"):
+    for raw_path in output.split(
+        b"\0"
+    ):
 
         if not raw_path:
             continue
@@ -100,19 +107,25 @@ def get_staged_files(
         )
 
         staged_files.append(
-            Path(relative_path)
+            Path(
+                relative_path
+            )
         )
 
     return staged_files
 
 
-def read_staged_file(
+def get_staged_file_size(
     root: Path,
     relative_path: Path,
-) -> str:
+) -> int:
     """
-    Read the exact version of a file stored
-    in Git's staging area.
+    Ask Git for the staged blob size without
+    loading the blob content.
+
+    This check occurs before git show so large
+    staged files cannot force LeakGuard to
+    buffer their entire contents first.
     """
 
     git_path = (
@@ -120,12 +133,73 @@ def read_staged_file(
         .as_posix()
     )
 
-    content = run_git_command(
+    output = run_git_command(
+        root,
+        [
+            "cat-file",
+            "-s",
+            f":{git_path}",
+        ],
+    )
+
+    try:
+        return int(
+            output.decode(
+                "ascii"
+            ).strip()
+        )
+
+    except (
+        UnicodeDecodeError,
+        ValueError,
+    ) as error:
+        raise GitStagedScanError(
+            "Git returned an invalid "
+            "staged blob size."
+        ) from error
+
+
+def read_staged_file_bytes(
+    root: Path,
+    relative_path: Path,
+) -> bytes:
+    """
+    Read the exact staged blob as bytes.
+
+    Callers must perform the staged size
+    check before invoking this function.
+    """
+
+    git_path = (
+        relative_path
+        .as_posix()
+    )
+
+    return run_git_command(
         root,
         [
             "show",
             f":{git_path}",
         ],
+    )
+
+
+def read_staged_file(
+    root: Path,
+    relative_path: Path,
+) -> str:
+    """
+    Backward-compatible text reader for
+    staged file content.
+    """
+
+    content = (
+        read_staged_file_bytes(
+            root=root,
+            relative_path=(
+                relative_path
+            ),
+        )
     )
 
     return content.decode(
@@ -142,8 +216,11 @@ def scan_staged_path(
     Scan only content currently staged
     for the next Git commit.
 
-    A supplied ML advisory runtime is reused
-    across every staged file.
+    Supported staged blobs are size-checked
+    before content is loaded.
+
+    Binary and oversized supported files
+    become fail-closed coverage findings.
     """
 
     root = root.resolve()
@@ -184,7 +261,9 @@ def scan_staged_path(
         if should_skip(
             path=absolute_path,
             root=root,
-            ignore_patterns=ignore_patterns,
+            ignore_patterns=(
+                ignore_patterns
+            ),
         ):
             continue
 
@@ -193,12 +272,74 @@ def scan_staged_path(
         ):
             continue
 
-        content = read_staged_file(
-            root=root,
-            relative_path=relative_path,
+        files_scanned += 1
+
+        staged_size = (
+            get_staged_file_size(
+                root=root,
+                relative_path=(
+                    relative_path
+                ),
+            )
         )
 
-        files_scanned += 1
+        size_result = (
+            evaluate_file_size(
+                staged_size
+            )
+        )
+
+        if not size_result.safe_to_scan:
+
+            findings.append(
+                build_scan_limitation_finding(
+                    path=absolute_path,
+                    reason=(
+                        size_result.reason
+                        or "Staged file could "
+                        "not be scanned safely."
+                    ),
+                )
+            )
+
+            continue
+
+        raw_content = (
+            read_staged_file_bytes(
+                root=root,
+                relative_path=(
+                    relative_path
+                ),
+            )
+        )
+
+        content_result = (
+            evaluate_content_bytes(
+                raw_content
+            )
+        )
+
+        if not (
+            content_result.safe_to_scan
+        ):
+
+            findings.append(
+                build_scan_limitation_finding(
+                    path=absolute_path,
+                    reason=(
+                        content_result.reason
+                        or "Staged file could "
+                        "not be scanned safely."
+                    ),
+                )
+            )
+
+            continue
+
+        content = raw_content.decode(
+            "utf-8",
+            errors="ignore",
+        )
 
         findings.extend(
             scan_content(
