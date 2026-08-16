@@ -1,5 +1,6 @@
-import subprocess
+﻿import subprocess
 from pathlib import Path
+from typing import Any
 
 from leakguard.ignore import (
     load_ignore_patterns,
@@ -135,10 +136,14 @@ def read_staged_file(
 
 def scan_staged_path(
     root: Path,
+    ml_advisory_runtime: Any | None = None,
 ) -> tuple[int, list[dict]]:
     """
     Scan only content currently staged
     for the next Git commit.
+
+    A supplied ML advisory runtime is reused
+    across every staged file.
     """
 
     root = root.resolve()
@@ -199,6 +204,9 @@ def scan_staged_path(
             scan_content(
                 path=absolute_path,
                 content=content,
+                ml_advisory_runtime=(
+                    ml_advisory_runtime
+                ),
             )
         )
 
