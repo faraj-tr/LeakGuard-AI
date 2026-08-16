@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 
 import typer
 from rich.console import Console
@@ -9,6 +9,10 @@ from leakguard.git_hook import (
     ExistingHookError,
     NotGitRepositoryError,
     install_pre_commit_hook,
+)
+from leakguard.ml.candidate_v2_runtime import (
+    CandidateV2RuntimeError,
+    load_frozen_candidate_v2_runtime,
 )
 from leakguard.scanner import scan_path
 from leakguard.staged import (
@@ -99,6 +103,46 @@ def format_file_location(
     )
 
 
+def format_ml_risk(
+    finding: dict,
+) -> str:
+    """
+    Format Candidate v2 advisory probability.
+
+    The score is not presented as calibrated
+    certainty and does not control blocking.
+    """
+
+    advisory = finding.get(
+        "ml_advisory"
+    )
+
+    if advisory is None:
+        return "-"
+
+    risk_score = float(
+        advisory[
+            "risk_score"
+        ]
+    )
+
+    prediction = advisory[
+        "prediction"
+    ]
+
+    label = (
+        "suspicious"
+        if prediction
+        == "suspicious"
+        else "below-threshold"
+    )
+
+    return (
+        f"{risk_score:.1%} "
+        f"({label})"
+    )
+
+
 @app.command("install-hook")
 def install_hook(
     path: Path = typer.Option(
@@ -182,6 +226,15 @@ def scan(
             "for the next Git commit."
         ),
     ),
+    ml_advisory: bool = typer.Option(
+        False,
+        "--ml-advisory",
+        help=(
+            "Enable the experimental "
+            "Candidate v2 ML advisory signal. "
+            "ML does not gain blocking authority."
+        ),
+    ),
 ):
     """
     Scan a project for possible secret leaks.
@@ -213,6 +266,36 @@ def scan(
             code=1
         )
 
+    ml_runtime = None
+
+    if ml_advisory:
+
+        try:
+            ml_runtime = (
+                load_frozen_candidate_v2_runtime()
+            )
+
+        except CandidateV2RuntimeError as error:
+
+            console.print(
+                Panel.fit(
+                    "[bold red]"
+                    "Unable to enable "
+                    "Candidate v2 ML advisory."
+                    "[/bold red]\n\n"
+                    f"[dim]{error}[/dim]\n\n"
+                    "[dim]"
+                    "The deterministic scanner "
+                    "was not started."
+                    "[/dim]",
+                    title="ML Advisory",
+                )
+            )
+
+            raise typer.Exit(
+                code=2
+            )
+
     console.print()
 
     mode_text = (
@@ -234,6 +317,15 @@ def scan(
         )
     )
 
+    if ml_advisory:
+
+        console.print(
+            "[dim]"
+            "ML Advisory: Candidate v2 "
+            "(experimental, non-blocking)"
+            "[/dim]"
+        )
+
     console.print()
 
     try:
@@ -242,7 +334,10 @@ def scan(
 
             files_scanned, findings = (
                 scan_staged_path(
-                    path
+                    path,
+                    ml_advisory_runtime=(
+                        ml_runtime
+                    ),
                 )
             )
 
@@ -250,7 +345,10 @@ def scan(
 
             files_scanned, findings = (
                 scan_path(
-                    path
+                    path,
+                    ml_advisory_runtime=(
+                        ml_runtime
+                    ),
                 )
             )
 
@@ -328,6 +426,21 @@ def scan(
         no_wrap=True,
     )
 
+    has_ml_results = any(
+        finding.get(
+            "ml_advisory"
+        )
+        is not None
+        for finding in findings
+    )
+
+    if has_ml_results:
+        table.add_column(
+            "ML Risk",
+            justify="right",
+            no_wrap=True,
+        )
+
     table.add_column(
         "Masked Value",
         no_wrap=True,
@@ -379,7 +492,7 @@ def scan(
             )
         )
 
-        table.add_row(
+        row = [
             (
                 f"[{severity_style}]"
                 f"{severity}"
@@ -389,9 +502,23 @@ def scan(
             location,
             framework,
             score,
+        ]
+
+        if has_ml_results:
+            row.append(
+                format_ml_risk(
+                    finding
+                )
+            )
+
+        row.append(
             finding[
                 "masked_value"
-            ],
+            ]
+        )
+
+        table.add_row(
+            *row
         )
 
     console.print(
@@ -443,6 +570,28 @@ def scan(
                 f"  {reasons}"
             )
 
+    if has_ml_results:
+
+        console.print()
+
+        console.print(
+            Panel.fit(
+                "[bold cyan]"
+                "Candidate v2 ML Advisory"
+                "[/bold cyan]\n\n"
+                "[dim]"
+                "Experimental classification "
+                "signal only.\n"
+                "Risk scores are not calibrated "
+                "credential probabilities.\n"
+                "ML does not create, suppress, "
+                "or escalate findings and has "
+                "no independent blocking authority."
+                "[/dim]",
+                title="ML Advisory",
+            )
+        )
+
     critical_count = sum(
         finding["severity"]
         == "CRITICAL"
@@ -475,8 +624,9 @@ def scan(
             "Medium: "
             f"[bold]{medium_count}[/bold]\n\n"
             "[dim]"
-            "Resolve the findings before "
-            "shipping this project."
+            "Resolve the deterministic "
+            "findings before shipping "
+            "this project."
             "[/dim]",
             title="Gate Result",
         )
@@ -489,3 +639,4 @@ def scan(
 
 if __name__ == "__main__":
     app()
+
