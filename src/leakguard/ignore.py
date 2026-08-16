@@ -1,3 +1,4 @@
+﻿import os
 from fnmatch import fnmatch
 from pathlib import Path
 
@@ -5,41 +6,149 @@ from pathlib import Path
 IGNORE_FILE_NAME = ".leakguardignore"
 
 
-def load_ignore_patterns(root: Path) -> list[str]:
+def get_project_relative_path(
+    path: Path,
+    root: Path,
+) -> Path | None:
     """
-    Load LeakGuard ignore rules from the scan root.
+    Return a lexically normalized path relative
+    to the scan root.
+
+    os.path.abspath is used deliberately
+    instead of Path.resolve().
+
+    This normalizes "." and ".." without
+    following symbolic links, so ignore rules
+    are applied to the path that actually
+    appears inside the project.
+    """
+
+    root_path = (
+        Path(
+            os.path.abspath(
+                os.fspath(
+                    Path(root)
+                    .expanduser()
+                )
+            )
+        )
+    )
+
+    candidate = (
+        Path(path)
+        .expanduser()
+    )
+
+    if not candidate.is_absolute():
+        candidate = (
+            root_path
+            / candidate
+        )
+
+    candidate_path = Path(
+        os.path.abspath(
+            os.fspath(
+                candidate
+            )
+        )
+    )
+
+    try:
+        return (
+            candidate_path
+            .relative_to(
+                root_path
+            )
+        )
+
+    except ValueError:
+        return None
+
+
+def normalize_ignore_pattern(
+    pattern: str,
+) -> str:
+    """
+    Normalize path separators while
+    preserving LeakGuard ignore semantics.
+    """
+
+    normalized = (
+        pattern.strip()
+        .replace(
+            "\\",
+            "/",
+        )
+    )
+
+    while normalized.startswith(
+        "./"
+    ):
+        normalized = normalized[
+            2:
+        ]
+
+    return normalized
+
+
+def load_ignore_patterns(
+    root: Path,
+) -> list[str]:
+    """
+    Load LeakGuard ignore rules from the
+    scan root.
 
     Blank lines and comments beginning with #
     are ignored.
+
+    UTF-8 BOM is tolerated because Windows
+    PowerShell and some editors may emit it.
     """
 
-    ignore_file = root / IGNORE_FILE_NAME
+    ignore_file = (
+        Path(root)
+        / IGNORE_FILE_NAME
+    )
 
     if not ignore_file.is_file():
         return []
 
     try:
-        content = ignore_file.read_text(
-            encoding="utf-8",
-            errors="ignore",
+        raw_content = (
+            ignore_file
+            .read_bytes()
         )
 
     except OSError:
+        # Failure to load ignore rules makes
+        # LeakGuard scan more, not less.
         return []
+
+    content = raw_content.decode(
+        "utf-8-sig",
+        errors="ignore",
+    )
 
     patterns = []
 
     for line in content.splitlines():
-        pattern = line.strip()
+
+        pattern = (
+            normalize_ignore_pattern(
+                line
+            )
+        )
 
         if not pattern:
             continue
 
-        if pattern.startswith("#"):
+        if pattern.startswith(
+            "#"
+        ):
             continue
 
         patterns.append(
-            pattern.replace("\\", "/")
+            pattern
         )
 
     return patterns
@@ -51,48 +160,64 @@ def is_ignored(
     patterns: list[str],
 ) -> bool:
     """
-    Check whether a path matches any LeakGuard
-    ignore rule.
+    Check whether a project-relative lexical
+    path matches any LeakGuard ignore rule.
 
-    Supported examples:
-
-        demo_project/
-        tests/fixtures/
-        *.log
-        generated.json
+    Symbolic links are not resolved while
+    applying ignore rules.
     """
 
-    try:
-        relative_path = (
-            path.resolve()
-            .relative_to(root.resolve())
-            .as_posix()
+    relative = (
+        get_project_relative_path(
+            path=path,
+            root=root,
         )
+    )
 
-    except ValueError:
+    if relative is None:
         return False
 
+    relative_path = (
+        relative
+        .as_posix()
+    )
+
     for pattern in patterns:
+
         normalized_pattern = (
-            pattern.strip()
-            .replace("\\", "/")
+            normalize_ignore_pattern(
+                pattern
+            )
         )
 
         if not normalized_pattern:
             continue
 
-        if normalized_pattern.startswith("/"):
+        if normalized_pattern.startswith(
+            "/"
+        ):
             normalized_pattern = (
-                normalized_pattern[1:]
+                normalized_pattern[
+                    1:
+                ]
             )
 
         # Directory rule:
         # demo_project/
-        if normalized_pattern.endswith("/"):
-            directory = normalized_pattern.rstrip("/")
+        if normalized_pattern.endswith(
+            "/"
+        ):
+
+            directory = (
+                normalized_pattern
+                .rstrip(
+                    "/"
+                )
+            )
 
             if (
-                relative_path == directory
+                relative_path
+                == directory
                 or relative_path.startswith(
                     f"{directory}/"
                 )
@@ -101,17 +226,18 @@ def is_ignored(
 
             continue
 
-        # Full relative path / glob rule.
+        # Full project-relative path / glob.
         if fnmatch(
             relative_path,
             normalized_pattern,
         ):
             return True
 
-        # File-name glob rule:
+        # Basename rule:
         # *.log
+        # generated.json
         if fnmatch(
-            path.name,
+            relative.name,
             normalized_pattern,
         ):
             return True

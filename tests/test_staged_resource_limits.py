@@ -21,6 +21,19 @@ def prepare_fake_git_root(
     return tmp_path
 
 
+def install_regular_mode(
+    monkeypatch,
+    path_name,
+):
+    monkeypatch.setattr(
+        "leakguard.staged."
+        "get_staged_index_modes",
+        lambda root: {
+            path_name: "100644"
+        },
+    )
+
+
 def test_oversized_staged_blob_is_not_read(
     tmp_path,
     monkeypatch,
@@ -37,6 +50,11 @@ def test_oversized_staged_blob_is_not_read(
                 "large.py"
             )
         ],
+    )
+
+    install_regular_mode(
+        monkeypatch,
+        "large.py",
     )
 
     monkeypatch.setattr(
@@ -99,6 +117,11 @@ def test_binary_staged_blob_fails_closed(
         ],
     )
 
+    install_regular_mode(
+        monkeypatch,
+        "binary.py",
+    )
+
     monkeypatch.setattr(
         "leakguard.staged."
         "get_staged_file_size",
@@ -159,6 +182,11 @@ def test_normal_staged_blob_still_scans(
                 "config.py"
             )
         ],
+    )
+
+    install_regular_mode(
+        monkeypatch,
+        "config.py",
     )
 
     monkeypatch.setattr(

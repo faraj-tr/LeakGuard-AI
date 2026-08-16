@@ -17,6 +17,12 @@ from leakguard.scanner import (
 )
 
 
+REGULAR_GIT_FILE_MODES = {
+    "100644",
+    "100755",
+}
+
+
 class GitStagedScanError(Exception):
     """
     Raised when LeakGuard cannot inspect
@@ -115,6 +121,95 @@ def get_staged_files(
     return staged_files
 
 
+def get_staged_index_modes(
+    root: Path,
+) -> dict[str, str]:
+    """
+    Return Git index modes keyed by their
+    project-relative POSIX paths.
+
+    Git mode allows LeakGuard to distinguish
+    regular staged blobs from symbolic links
+    and other non-regular index entries.
+    """
+
+    output = run_git_command(
+        root,
+        [
+            "ls-files",
+            "--stage",
+            "-z",
+        ],
+    )
+
+    modes = {}
+
+    for record in output.split(
+        b"\0"
+    ):
+
+        if not record:
+            continue
+
+        try:
+            metadata, raw_path = (
+                record.split(
+                    b"\t",
+                    maxsplit=1,
+                )
+            )
+
+        except ValueError as error:
+            raise GitStagedScanError(
+                "Git returned malformed "
+                "index metadata."
+            ) from error
+
+        fields = metadata.split()
+
+        if len(
+            fields
+        ) != 3:
+            raise GitStagedScanError(
+                "Git returned malformed "
+                "index metadata."
+            )
+
+        raw_mode, _, raw_stage = (
+            fields
+        )
+
+        if raw_stage != b"0":
+            raise GitStagedScanError(
+                "Unmerged Git index entries "
+                "cannot be scanned safely."
+            )
+
+        try:
+            mode = raw_mode.decode(
+                "ascii"
+            )
+
+        except UnicodeDecodeError as error:
+            raise GitStagedScanError(
+                "Git returned an invalid "
+                "index file mode."
+            ) from error
+
+        relative_path = raw_path.decode(
+            "utf-8",
+            errors="surrogateescape",
+        )
+
+        modes[
+            Path(
+                relative_path
+            ).as_posix()
+        ] = mode
+
+    return modes
+
+
 def get_staged_file_size(
     root: Path,
     relative_path: Path,
@@ -123,9 +218,9 @@ def get_staged_file_size(
     Ask Git for the staged blob size without
     loading the blob content.
 
-    This check occurs before git show so large
+    This occurs before git show so oversized
     staged files cannot force LeakGuard to
-    buffer their entire contents first.
+    buffer their complete contents first.
     """
 
     git_path = (
@@ -166,8 +261,8 @@ def read_staged_file_bytes(
     """
     Read the exact staged blob as bytes.
 
-    Callers must perform the staged size
-    check before invoking this function.
+    Callers must validate index mode and
+    staged size before invoking this function.
     """
 
     git_path = (
@@ -216,11 +311,14 @@ def scan_staged_path(
     Scan only content currently staged
     for the next Git commit.
 
-    Supported staged blobs are size-checked
-    before content is loaded.
+    Supported staged blobs are validated for:
+    - project path scope
+    - ignore rules
+    - Git index file mode
+    - size
+    - binary content
 
-    Binary and oversized supported files
-    become fail-closed coverage findings.
+    Non-regular supported entries fail closed.
     """
 
     root = root.resolve()
@@ -244,6 +342,12 @@ def scan_staged_path(
 
     staged_files = (
         get_staged_files(
+            root
+        )
+    )
+
+    staged_modes = (
+        get_staged_index_modes(
             root
         )
     )
@@ -272,7 +376,43 @@ def scan_staged_path(
         ):
             continue
 
+        git_path = (
+            relative_path
+            .as_posix()
+        )
+
+        git_mode = (
+            staged_modes.get(
+                git_path
+            )
+        )
+
+        if git_mode is None:
+            raise GitStagedScanError(
+                "Unable to determine the "
+                "staged Git file mode for "
+                f"{git_path}."
+            )
+
         files_scanned += 1
+
+        if (
+            git_mode
+            not in REGULAR_GIT_FILE_MODES
+        ):
+
+            findings.append(
+                build_scan_limitation_finding(
+                    path=absolute_path,
+                    reason=(
+                        "Staged Git entry is "
+                        "not a regular file "
+                        f"(mode {git_mode})."
+                    ),
+                )
+            )
+
+            continue
 
         staged_size = (
             get_staged_file_size(

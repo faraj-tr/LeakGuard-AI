@@ -9,6 +9,7 @@ from leakguard.extractor import (
     extract_assignment,
 )
 from leakguard.ignore import (
+    get_project_relative_path,
     is_ignored,
     load_ignore_patterns,
 )
@@ -98,12 +99,29 @@ def should_skip(
     ignore_patterns: list[str],
 ) -> bool:
     """
-    Check whether a file should be skipped.
+    Check whether a project path should be
+    skipped.
+
+    Built-in skipped directory names are
+    evaluated only relative to the scan root.
+
+    Paths outside the scan root are never
+    scanned.
     """
+
+    relative_path = (
+        get_project_relative_path(
+            path=path,
+            root=root,
+        )
+    )
+
+    if relative_path is None:
+        return True
 
     if any(
         part in SKIP_DIRECTORIES
-        for part in path.parts
+        for part in relative_path.parts
     ):
         return True
 
@@ -112,7 +130,6 @@ def should_skip(
         root=root,
         patterns=ignore_patterns,
     )
-
 
 def score_ml_advisory(
     ml_advisory_runtime: Any | None,
@@ -511,12 +528,41 @@ def scan_file(
     """
     Read and scan one working-tree file.
 
-    Supported files are checked for size and
-    binary content before text scanning.
+    Symbolic links are not followed.
 
-    Coverage limitations fail closed instead
-    of being silently ignored.
+    Metadata/read failures and coverage
+    limitations fail closed instead of
+    disappearing silently.
     """
+
+    try:
+        is_symbolic_link = (
+            path.is_symlink()
+        )
+
+    except OSError:
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "File metadata could not "
+                    "be inspected safely."
+                ),
+            )
+        ]
+
+    if is_symbolic_link:
+
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "Symbolic links are not "
+                    "followed during working-tree "
+                    "security scans."
+                ),
+            )
+        ]
 
     try:
         file_size = (
@@ -525,13 +571,22 @@ def scan_file(
         )
 
     except OSError:
-        return []
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "File metadata could not "
+                    "be read safely."
+                ),
+            )
+        ]
 
     size_result = evaluate_file_size(
         file_size
     )
 
     if not size_result.safe_to_scan:
+
         return [
             build_scan_limitation_finding(
                 path=path,
@@ -549,7 +604,15 @@ def scan_file(
         )
 
     except OSError:
-        return []
+        return [
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "File content could not "
+                    "be read safely."
+                ),
+            )
+        ]
 
     content_result = (
         evaluate_content_bytes(
@@ -558,6 +621,7 @@ def scan_file(
     )
 
     if not content_result.safe_to_scan:
+
         return [
             build_scan_limitation_finding(
                 path=path,
@@ -589,6 +653,10 @@ def scan_path(
     """
     Scan supported files inside a project.
 
+    Supported symbolic-link files are treated
+    as fail-closed coverage limitations rather
+    than being followed outside the project.
+
     A supplied ML advisory runtime is reused
     across every scanned file.
     """
@@ -605,6 +673,78 @@ def scan_path(
     findings = []
 
     for path in root.rglob("*"):
+
+        # Inspect symbolic-link metadata before
+        # is_file(), because is_file() follows
+        # the link target.
+        #
+        # Metadata failures during traversal
+        # fail closed for supported project
+        # paths rather than aborting the scan.
+        try:
+            is_symbolic_link = (
+                path.is_symlink()
+            )
+
+        except OSError:
+
+            if should_skip(
+                path=path,
+                root=root,
+                ignore_patterns=(
+                    ignore_patterns
+                ),
+            ):
+                continue
+
+            if not is_supported_file(
+                path
+            ):
+                continue
+
+            files_scanned += 1
+
+            findings.append(
+                build_scan_limitation_finding(
+                    path=path,
+                    reason=(
+                        "File metadata could not "
+                        "be inspected safely "
+                        "during project traversal."
+                    ),
+                )
+            )
+
+            continue
+
+        if is_symbolic_link:
+
+            if should_skip(
+                path=path,
+                root=root,
+                ignore_patterns=(
+                    ignore_patterns
+                ),
+            ):
+                continue
+
+            if not is_supported_file(
+                path
+            ):
+                continue
+
+            files_scanned += 1
+
+            findings.extend(
+                scan_file(
+                    path=path,
+                    ml_advisory_runtime=(
+                        ml_advisory_runtime
+                    ),
+                )
+            )
+
+            continue
 
         if not path.is_file():
             continue
