@@ -1,4 +1,7 @@
-from leakguard.extractor import extract_assignment
+﻿from leakguard.extractor import (
+    classify_assignment,
+    extract_assignment,
+)
 
 
 def test_extracts_python_assignment():
@@ -40,3 +43,78 @@ def test_ignores_function_call():
     )
 
     assert result is None
+
+
+def test_expression_assignment_is_not_extracted_as_literal():
+    result = extract_assignment(
+        "password = generate_password()"
+    )
+
+    assert result is None
+
+
+def test_classifies_expression_assignment():
+    result = classify_assignment(
+        'password = os.getenv("PASSWORD")'
+    )
+
+    assert result == {
+        "kind": "expression",
+        "variable_name": "password",
+        "value": None,
+    }
+
+
+def test_extracts_typed_python_assignment():
+    result = extract_assignment(
+        'password: str = "ABC123XYZ"'
+    )
+
+    assert result == {
+        "variable_name": "password",
+        "value": "ABC123XYZ",
+    }
+
+
+def test_extracts_typed_typescript_assignment():
+    result = extract_assignment(
+        'const api_key: string = "ABC123XYZ";'
+    )
+
+    assert result == {
+        "variable_name": "api_key",
+        "value": "ABC123XYZ",
+    }
+
+
+def test_extracts_exported_javascript_assignment():
+    result = extract_assignment(
+        'export const api_key = "ABC123XYZ";'
+    )
+
+    assert result == {
+        "variable_name": "api_key",
+        "value": "ABC123XYZ",
+    }
+
+
+def test_extracts_final_name_from_dotted_target():
+    result = extract_assignment(
+        'self.password = "ABC123XYZ"'
+    )
+
+    assert result == {
+        "variable_name": "password",
+        "value": "ABC123XYZ",
+    }
+
+
+def test_extracts_yaml_style_quoted_property():
+    result = extract_assignment(
+        'api_key: "ABC123XYZ"'
+    )
+
+    assert result == {
+        "variable_name": "api_key",
+        "value": "ABC123XYZ",
+    }

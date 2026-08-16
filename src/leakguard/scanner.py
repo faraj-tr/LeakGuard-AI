@@ -1,24 +1,36 @@
-from pathlib import Path
+﻿from pathlib import Path
 from typing import Any
 
 from leakguard.candidate import analyze_candidate
 from leakguard.client_exposure import analyze_client_exposure
 from leakguard.dotenv import extract_dotenv_assignment
-from leakguard.extractor import extract_assignment
+from leakguard.extractor import (
+    classify_assignment,
+    extract_assignment,
+)
 from leakguard.ignore import (
     is_ignored,
     load_ignore_patterns,
 )
 from leakguard.masking import mask_secret
-from leakguard.patterns import SECRET_PATTERNS
+from leakguard.patterns import (
+    ASSIGNMENT_SECRET_PATTERNS,
+    INLINE_SECRET_PATTERNS,
+    matches_assignment_secret,
+)
 
 
-SUPPORTED_EXTENSIONS = {
+CODE_EXTENSIONS = {
     ".py",
     ".js",
     ".jsx",
     ".ts",
     ".tsx",
+}
+
+
+SUPPORTED_EXTENSIONS = {
+    *CODE_EXTENSIONS,
     ".json",
     ".yaml",
     ".yml",
@@ -50,6 +62,19 @@ def is_supported_file(path: Path) -> bool:
     return (
         path.suffix.lower() in SUPPORTED_EXTENSIONS
         or path.name in SPECIAL_FILES
+    )
+
+
+def is_code_file(path: Path) -> bool:
+    """
+    Return whether a file uses code assignment
+    semantics that require literal/expression
+    separation.
+    """
+
+    return (
+        path.suffix.lower()
+        in CODE_EXTENSIONS
     )
 
 
@@ -106,6 +131,37 @@ def score_ml_advisory(
     )
 
 
+def build_known_secret_finding(
+    path: Path,
+    line_number: int,
+    detector: dict,
+    raw_secret: str,
+) -> dict:
+    """
+    Build a masked deterministic finding
+    for a known secret detector.
+    """
+
+    return {
+        "file": str(path),
+        "line": line_number,
+        "type": detector[
+            "name"
+        ],
+        "severity": detector[
+            "severity"
+        ],
+        "masked_value": (
+            mask_secret(
+                raw_secret
+            )
+        ),
+        "candidate_score": None,
+        "framework": None,
+        "reasons": [],
+    }
+
+
 def scan_content(
     path: Path,
     content: str,
@@ -142,110 +198,231 @@ def scan_content(
         start=1,
     ):
 
-        # =================================
-        # Layer 1:
-        # Client-side environment exposure
-        # =================================
+        dotenv_assignment = None
 
-        if is_dotenv_file(path):
-
+        if is_dotenv_file(
+            path
+        ):
             dotenv_assignment = (
                 extract_dotenv_assignment(
                     line
                 )
             )
 
-            if dotenv_assignment is not None:
+        code_assignment = None
+
+        if is_code_file(
+            path
+        ):
+            code_assignment = (
+                classify_assignment(
+                    line
+                )
+            )
+
+        # =================================
+        # Layer 1:
+        # Client-side environment exposure
+        # =================================
+
+        if dotenv_assignment is not None:
+
+            variable_name = (
+                dotenv_assignment[
+                    "variable_name"
+                ]
+            )
+
+            raw_value = (
+                dotenv_assignment[
+                    "value"
+                ]
+            )
+
+            exposure = (
+                analyze_client_exposure(
+                    variable_name=variable_name,
+                    value=raw_value,
+                )
+            )
+
+            if exposure[
+                "is_risky"
+            ]:
+
+                findings.append(
+                    {
+                        "file": str(path),
+                        "line": line_number,
+                        "type": (
+                            "Client-Side "
+                            "Secret Exposure"
+                        ),
+                        "severity": exposure[
+                            "severity"
+                        ],
+                        "masked_value": (
+                            mask_secret(
+                                raw_value
+                            )
+                        ),
+                        "candidate_score": (
+                            exposure[
+                                "candidate_score"
+                            ]
+                        ),
+                        "framework": exposure[
+                            "framework"
+                        ],
+                        "reasons": exposure[
+                            "reasons"
+                        ],
+                    }
+                )
+
+                continue
+
+        # =================================
+        # Layer 2A:
+        # Assignment-based known secrets
+        # =================================
+
+        known_pattern_found = False
+
+        if is_code_file(
+            path
+        ):
+
+            # Security-sensitive assignment
+            # detectors operate only on
+            # supported fixed string literals.
+            #
+            # Expressions such as:
+            #   password = generate_password()
+            #   api_key = os.getenv("API_KEY")
+            #
+            # must never be interpreted as
+            # hardcoded secret values.
+            if (
+                code_assignment is not None
+                and code_assignment[
+                    "kind"
+                ]
+                == "literal"
+            ):
 
                 variable_name = (
-                    dotenv_assignment[
+                    code_assignment[
                         "variable_name"
                     ]
                 )
 
                 raw_value = (
-                    dotenv_assignment[
+                    code_assignment[
                         "value"
                     ]
                 )
 
-                exposure = (
-                    analyze_client_exposure(
-                        variable_name=variable_name,
-                        value=raw_value,
-                    )
-                )
+                for detector in (
+                    ASSIGNMENT_SECRET_PATTERNS
+                ):
 
-                if exposure["is_risky"]:
+                    if not (
+                        matches_assignment_secret(
+                            detector=detector,
+                            variable_name=(
+                                variable_name
+                            ),
+                            value=raw_value,
+                        )
+                    ):
+                        continue
 
                     findings.append(
-                        {
-                            "file": str(path),
-                            "line": line_number,
-                            "type": (
-                                "Client-Side "
-                                "Secret Exposure"
+                        build_known_secret_finding(
+                            path=path,
+                            line_number=(
+                                line_number
                             ),
-                            "severity": exposure[
-                                "severity"
-                            ],
-                            "masked_value": (
-                                mask_secret(
-                                    raw_value
-                                )
+                            detector=detector,
+                            raw_secret=(
+                                raw_value
                             ),
-                            "candidate_score": (
-                                exposure[
-                                    "candidate_score"
-                                ]
-                            ),
-                            "framework": exposure[
-                                "framework"
-                            ],
-                            "reasons": exposure[
-                                "reasons"
-                            ],
-                        }
+                        )
                     )
 
-                    continue
+                    known_pattern_found = True
+
+        else:
+
+            # Structured configuration formats
+            # retain raw assignment matching.
+            #
+            # Expressions are not treated as
+            # executable code in these formats,
+            # and this preserves existing
+            # YAML / JSON / dotenv coverage.
+            for detector in (
+                ASSIGNMENT_SECRET_PATTERNS
+            ):
+
+                for match in detector[
+                    "pattern"
+                ].finditer(
+                    line
+                ):
+
+                    raw_secret = (
+                        match.group(
+                            "secret"
+                        )
+                    )
+
+                    findings.append(
+                        build_known_secret_finding(
+                            path=path,
+                            line_number=(
+                                line_number
+                            ),
+                            detector=detector,
+                            raw_secret=(
+                                raw_secret
+                            ),
+                        )
+                    )
+
+                    known_pattern_found = True
 
         # =================================
-        # Layer 2:
-        # Known secret patterns
+        # Layer 2B:
+        # Inline secret patterns
         # =================================
 
-        known_pattern_found = False
-
-        for detector in SECRET_PATTERNS:
+        for detector in (
+            INLINE_SECRET_PATTERNS
+        ):
 
             for match in detector[
                 "pattern"
-            ].finditer(line):
+            ].finditer(
+                line
+            ):
 
                 raw_secret = match.group(
                     "secret"
                 )
 
                 findings.append(
-                    {
-                        "file": str(path),
-                        "line": line_number,
-                        "type": detector[
-                            "name"
-                        ],
-                        "severity": detector[
-                            "severity"
-                        ],
-                        "masked_value": (
-                            mask_secret(
-                                raw_secret
-                            )
+                    build_known_secret_finding(
+                        path=path,
+                        line_number=(
+                            line_number
                         ),
-                        "candidate_score": None,
-                        "framework": None,
-                        "reasons": [],
-                    }
+                        detector=detector,
+                        raw_secret=(
+                            raw_secret
+                        ),
+                    )
                 )
 
                 known_pattern_found = True
