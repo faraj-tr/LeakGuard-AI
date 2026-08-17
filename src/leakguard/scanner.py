@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Any
 
+from leakguard.artifacts import is_artifact_path
 from leakguard.candidate import analyze_candidate
 from leakguard.client_exposure import analyze_client_exposure
 from leakguard.dotenv import extract_dotenv_assignment
@@ -701,6 +702,19 @@ def scan_path(
     )
 
     for path in project_paths:
+
+        # Build-output paths belong
+        # exclusively to the dedicated
+        # artifact scanner.
+        #
+        # This prevents dist/, build/,
+        # and .next/static/ files from
+        # being scanned or counted twice.
+        if is_artifact_path(
+            path=path,
+            root=root,
+        ):
+            continue
 
         # Inspect symbolic-link metadata before
         # is_file(), because is_file() follows

@@ -1,4 +1,4 @@
-﻿from dataclasses import (
+from dataclasses import (
     dataclass,
     field,
 )
@@ -24,6 +24,47 @@ ARTIFACT_DIRECTORIES = (
     Path("build"),
     Path(".next") / "static",
 )
+
+
+def is_artifact_path(
+    path: Path,
+    root: Path,
+) -> bool:
+    """
+    Return whether a project path belongs to
+    one of LeakGuard's dedicated build-output
+    scanning roots.
+
+    Matching is lexical and project-relative;
+    symbolic links are not resolved here.
+    """
+
+    try:
+        relative_path = (
+            path.relative_to(
+                root
+            )
+        )
+
+    except ValueError:
+        return False
+
+    parts = relative_path.parts
+
+    if not parts:
+        return False
+
+    if parts[0] in {
+        "dist",
+        "build",
+    }:
+        return True
+
+    return (
+        len(parts) >= 2
+        and parts[0] == ".next"
+        and parts[1] == "static"
+    )
 
 
 ARTIFACT_EXTENSIONS = {

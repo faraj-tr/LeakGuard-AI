@@ -20,6 +20,7 @@ from leakguard.ml.candidate_v2_runtime import (
     load_frozen_candidate_v2_runtime,
 )
 from leakguard.model_cli import model_app
+from leakguard.artifacts import scan_artifacts
 from leakguard.scanner import scan_path
 from leakguard.staged import (
     GitStagedScanError,
@@ -426,13 +427,31 @@ def scan(
 
         else:
 
-            files_scanned, findings = (
-                scan_path(
-                    path,
-                    ml_advisory_runtime=(
-                        ml_runtime
-                    ),
-                )
+            (
+                source_files_scanned,
+                source_findings,
+            ) = scan_path(
+                path,
+                ml_advisory_runtime=(
+                    ml_runtime
+                ),
+            )
+
+            (
+                artifact_files_scanned,
+                artifact_findings,
+            ) = scan_artifacts(
+                path
+            )
+
+            files_scanned = (
+                source_files_scanned
+                + artifact_files_scanned
+            )
+
+            findings = (
+                source_findings
+                + artifact_findings
             )
 
     except GitStagedScanError as error:
