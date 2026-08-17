@@ -15,6 +15,7 @@ clean_demo/
 # secret-like values for model training and evaluation.
 data/
 
-reports/final_benchmark_v1.jsonreports/candidate_v2_holdout_benchmark_v1.json
-reports/candidate_v2_holdout_benchmark_v1.json
+# Benchmark reports contain deterministic dataset hashes
+# and evaluation metadata, not runtime credentials.
+reports/final_benchmark_v1.json
 reports/candidate_v2_holdout_benchmark_v1.json
