@@ -29,6 +29,7 @@ dev = [
 leakguard = "leakguard.cli:app"
 leakguard-api = "leakguard.runtime:run_api"
 leakguard-ui = "leakguard.runtime:run_ui"
+leakguard-stack = "leakguard.runtime:run_stack"
 
 [tool.setuptools.dynamic]
 version = {attr = "leakguard.version.__version__"}

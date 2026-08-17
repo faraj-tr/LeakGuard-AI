@@ -1,0 +1,42 @@
+# Version control
+.git/
+.github/
+
+# Python environments and caches
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local development material
+tests/
+scripts/
+docs/
+data/
+demo_project/
+reports/
+
+# Build outputs
+dist/
+build/
+
+# Model artifacts are mounted at runtime,
+# never baked into the image.
+models/
+
+# Logs
+*.log

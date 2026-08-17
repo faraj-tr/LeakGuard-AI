@@ -36,17 +36,13 @@ def test_pyproject_uses_dynamic_version():
         )
     )
 
-    project = data[
-        "project"
-    ]
+    project = data["project"]
 
     assert "version" not in project
 
     assert (
         "version"
-        in project[
-            "dynamic"
-        ]
+        in project["dynamic"]
     )
 
     assert (
@@ -101,5 +97,8 @@ def test_product_entrypoints_are_declared():
         ),
         "leakguard-ui": (
             "leakguard.runtime:run_ui"
+        ),
+        "leakguard-stack": (
+            "leakguard.runtime:run_stack"
         ),
     }

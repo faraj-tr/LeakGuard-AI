@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -11,22 +12,28 @@ API_PORT = 8000
 UI_HOST = "127.0.0.1"
 UI_PORT = 8501
 
+CONTAINER_UI_HOST = "0.0.0.0"
 
-def run_api() -> None:
+CONTAINER_MODE_ENV = (
+    "LEAKGUARD_CONTAINER_MODE"
+)
+
+
+def build_api_command() -> list[str]:
     """
-    Run the local-first LeakGuard FastAPI
-    service.
-
-    Network exposure is intentionally limited
-    to loopback for the standard local
-    entrypoint.
+    Build the internal FastAPI process command.
     """
 
-    uvicorn.run(
+    return [
+        sys.executable,
+        "-m",
+        "uvicorn",
         "leakguard.api.app:app",
-        host=API_HOST,
-        port=API_PORT,
-    )
+        "--host",
+        API_HOST,
+        "--port",
+        str(API_PORT),
+    ]
 
 
 def get_ui_app_path() -> Path:
@@ -45,11 +52,12 @@ def get_ui_app_path() -> Path:
     )
 
 
-def run_ui() -> None:
+def build_ui_command(
+    *,
+    host: str,
+) -> list[str]:
     """
-    Run the local-first LeakGuard Streamlit
-    dashboard using the active Python
-    interpreter.
+    Build the Streamlit process command.
     """
 
     app_path = get_ui_app_path()
@@ -60,19 +68,93 @@ def run_ui() -> None:
             "could not be located."
         )
 
-    command = [
+    return [
         sys.executable,
         "-m",
         "streamlit",
         "run",
         str(app_path),
         "--server.address",
-        UI_HOST,
+        host,
         "--server.port",
         str(UI_PORT),
+        "--server.headless",
+        "true",
     ]
 
+
+def run_api() -> None:
+    """
+    Run the local-first LeakGuard FastAPI
+    service.
+
+    The standard host entrypoint remains
+    restricted to loopback.
+    """
+
+    uvicorn.run(
+        "leakguard.api.app:app",
+        host=API_HOST,
+        port=API_PORT,
+    )
+
+
+def run_ui() -> None:
+    """
+    Run the standard local-first Streamlit
+    dashboard.
+    """
+
     subprocess.run(
-        command,
+        build_ui_command(
+            host=UI_HOST
+        ),
         check=True,
     )
+
+
+def run_stack() -> None:
+    """
+    Run the container-specific LeakGuard stack.
+
+    FastAPI remains internal loopback-only.
+    Streamlit listens on the container network
+    interface so Docker can publish only its
+    UI port to the host.
+
+    This entrypoint refuses to run unless
+    container mode is explicitly enabled.
+    """
+
+    if os.environ.get(
+        CONTAINER_MODE_ENV
+    ) != "1":
+        raise RuntimeError(
+            "Container stack runtime requires "
+            "LEAKGUARD_CONTAINER_MODE=1."
+        )
+
+    api_process = subprocess.Popen(
+        build_api_command()
+    )
+
+    try:
+        subprocess.run(
+            build_ui_command(
+                host=CONTAINER_UI_HOST
+            ),
+            check=True,
+        )
+
+    finally:
+        if api_process.poll() is None:
+            api_process.terminate()
+
+            try:
+                api_process.wait(
+                    timeout=5
+                )
+
+            except subprocess.TimeoutExpired:
+                api_process.kill()
+                api_process.wait()

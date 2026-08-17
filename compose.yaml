@@ -1,0 +1,32 @@
+services:
+  leakguard:
+    build:
+      context: .
+
+    init: true
+
+    ports:
+      - "127.0.0.1:8501:8501"
+
+    environment:
+      LEAKGUARD_CONTAINER_MODE: "1"
+      LEAKGUARD_API_SCAN_ROOT: /workspace
+      LEAKGUARD_MODEL_HOME: /models
+      LEAKGUARD_API_URL: http://127.0.0.1:8000
+
+    volumes:
+      - type: bind
+        source: ${LEAKGUARD_WORKSPACE:-.}
+        target: /workspace
+        read_only: true
+
+      - type: bind
+        source: ${LEAKGUARD_MODEL_DIR:-./models}
+        target: /models
+        read_only: true
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_drop:
+      - ALL
