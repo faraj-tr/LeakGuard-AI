@@ -6,6 +6,9 @@ from leakguard.ui.client import (
     DEFAULT_API_URL,
     LeakGuardApiClient,
     LeakGuardApiClientError,
+    LeakGuardApiConfigurationError,
+    LeakGuardApiResponseError,
+    public_error_message,
 )
 from leakguard.ui.workflow import (
     DashboardPayloadError,
@@ -60,6 +63,20 @@ def render_api_status(
     try:
         health = client.health()
 
+    except LeakGuardApiResponseError as error:
+        st.error(
+            "LeakGuard API health check "
+            "failed."
+        )
+
+        st.caption(
+            public_error_message(
+                error.code
+            )
+        )
+
+        return False
+
     except LeakGuardApiClientError:
         st.error(
             "LeakGuard API is unavailable. "
@@ -69,10 +86,9 @@ def render_api_status(
 
         return False
 
-    service_version = health.get(
-        "service_version",
-        "unknown",
-    )
+    service_version = health[
+        "service_version"
+    ]
 
     st.success(
         "LeakGuard API connected"
@@ -164,16 +180,25 @@ def run_scan_from_form(
                 ),
             )
 
-    except LeakGuardApiClientError as error:
+    except LeakGuardApiResponseError as error:
         st.error(
             "Security scan could not be "
             "completed."
         )
 
-        st.text(
-            str(
-                error
+        st.caption(
+            public_error_message(
+                error.code
             )
+        )
+
+        return
+
+    except LeakGuardApiClientError:
+        st.error(
+            "Security scan could not be "
+            "completed because the local API "
+            "is unavailable."
         )
 
         return
@@ -271,7 +296,7 @@ def render_scan_summary(
     )
 
     ml_text = (
-        "Enabled ? experimental, "
+        "Enabled - experimental, "
         "non-blocking"
         if scan_view.ml_advisory_enabled
         else "Disabled"
@@ -302,13 +327,17 @@ def render_findings(
         "Findings"
     )
 
+    st.caption(
+        "Only masked secret values are shown."
+    )
+
     for index, finding in enumerate(
         scan_view.findings,
         start=1,
     ):
         label = (
-            f"Finding {index} "
-            f"? {finding.severity}"
+            f"Finding {index} | "
+            f"{finding.severity}"
         )
 
         with st.expander(
@@ -412,7 +441,21 @@ def main() -> None:
 
     render_header()
 
-    client = build_api_client()
+    try:
+        client = build_api_client()
+
+    except LeakGuardApiConfigurationError:
+        st.error(
+            "LeakGuard API URL configuration "
+            "is unsafe."
+        )
+
+        st.caption(
+            "The dashboard accepts only local "
+            "loopback API addresses."
+        )
+
+        return
 
     api_available = (
         render_api_status(
