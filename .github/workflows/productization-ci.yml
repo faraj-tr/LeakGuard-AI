@@ -1,0 +1,247 @@
+name: LeakGuard Productization CI
+
+on:
+  push:
+
+  pull_request:
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: productization-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: Regression (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+
+          - os: ubuntu-latest
+            python-version: "3.12"
+
+          - os: windows-latest
+            python-version: "3.12"
+
+          - os: macos-latest
+            python-version: "3.12"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install development environment
+        run: python -m pip install -e ".[dev]"
+
+      - name: Run regression suite
+        run: pytest -q
+
+      - name: Verify CLI entrypoint
+        run: leakguard version
+
+      - name: Run deterministic repository scan
+        run: leakguard scan . --no-ml-advisory
+
+  package:
+    name: Build and verify distribution
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install packaging frontend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build
+
+      - name: Build wheel and source distribution
+        run: python -m build
+
+      - name: Verify distribution artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wheel_count="$(find dist -maxdepth 1 -type f -name '*.whl' | wc -l)"
+          sdist_count="$(find dist -maxdepth 1 -type f -name '*.tar.gz' | wc -l)"
+
+          test "$wheel_count" -eq 1
+          test "$sdist_count" -eq 1
+
+      - name: Install wheel into clean environment
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wheel="$(find dist -maxdepth 1 -type f -name '*.whl' -print -quit)"
+
+          test -n "$wheel"
+
+          python -m venv .wheel-venv
+
+          .wheel-venv/bin/python -m pip install --upgrade pip
+          .wheel-venv/bin/python -m pip install "$wheel"
+
+      - name: Verify installed package metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          .wheel-venv/bin/python - <<'PY'
+          from importlib.metadata import (
+              entry_points,
+              version,
+          )
+
+          import leakguard
+
+
+          assert (
+              version("leakguard-ai")
+              == leakguard.__version__
+          )
+
+          expected = {
+              "leakguard": "leakguard.cli:app",
+              "leakguard-api": "leakguard.runtime:run_api",
+              "leakguard-ui": "leakguard.runtime:run_ui",
+              "leakguard-stack": "leakguard.runtime:run_stack",
+          }
+
+          installed = {
+              entry.name: entry.value
+              for entry in entry_points(
+                  group="console_scripts"
+              )
+              if entry.name in expected
+          }
+
+          assert installed == expected
+
+          print(
+              "PACKAGE_VERSION:",
+              leakguard.__version__,
+          )
+
+          print(
+              "DISTRIBUTION_METADATA_OK"
+          )
+
+          print(
+              "CONSOLE_ENTRYPOINTS_OK"
+          )
+          PY
+
+      - name: Verify installed CLI
+        run: .wheel-venv/bin/leakguard version
+
+  container:
+    name: Build and smoke-test container
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build container image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          load: true
+          tags: leakguard-ai:ci
+
+      - name: Prepare read-only runtime inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p /tmp/leakguard-ci-workspace
+          mkdir -p /tmp/leakguard-ci-models
+
+          printf '%s
+' 'message = "safe"'             > /tmp/leakguard-ci-workspace/app.py
+
+      - name: Start hardened container
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          docker run             --detach             --name leakguard-ci             --security-opt no-new-privileges             --cap-drop ALL             --mount               type=bind,source=/tmp/leakguard-ci-workspace,target=/workspace,readonly             --mount               type=bind,source=/tmp/leakguard-ci-models,target=/models,readonly             --health-interval=2s             --health-timeout=3s             --health-start-period=2s             --health-retries=15             leakguard-ai:ci
+
+      - name: Wait for internal API health
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for attempt in $(seq 1 30); do
+            status="$(
+              docker inspect                 --format='{{.State.Health.Status}}'                 leakguard-ci
+            )"
+
+            echo "Health attempt $attempt: $status"
+
+            if [ "$status" = "healthy" ]; then
+              exit 0
+            fi
+
+            if [ "$status" = "unhealthy" ]; then
+              docker logs leakguard-ci
+              exit 1
+            fi
+
+            sleep 2
+          done
+
+          docker logs leakguard-ci
+          exit 1
+
+      - name: Smoke-test dashboard process
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          docker exec leakguard-ci             python -c             "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8501', timeout=5); assert r.status == 200"
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs leakguard-ci || true
+
+      - name: Remove test container
+        if: always()
+        run: docker rm -f leakguard-ci || true
