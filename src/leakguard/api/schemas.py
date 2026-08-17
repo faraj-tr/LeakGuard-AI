@@ -22,8 +22,8 @@ class ScanRequest(BaseModel):
     """
     Local project scan request.
 
-    Unknown request fields are rejected so
-    callers cannot invent unsupported security
+    Unknown fields are rejected so HTTP
+    clients cannot invent unsupported security
     controls such as ML blocking authority.
     """
 
@@ -44,8 +44,8 @@ class MLAdvisoryResponse(BaseModel):
     """
     Candidate v2 advisory metadata.
 
-    It is intentionally non-blocking and the
-    score is not a calibrated probability.
+    Candidate v2 remains experimental and
+    explicitly non-blocking.
     """
 
     available: bool
@@ -53,17 +53,19 @@ class MLAdvisoryResponse(BaseModel):
     mode: Literal["advisory"]
     risk_score: float
     threshold: float
+
     prediction: Literal[
         "suspicious",
         "lower_risk",
     ]
+
     calibrated: Literal[False]
     blocking: Literal[False]
 
 
 class FindingResponse(BaseModel):
     """
-    Public, secret-safe finding contract.
+    Public secret-safe finding contract.
     """
 
     file: str
@@ -122,3 +124,31 @@ class ScanResponse(BaseModel):
     findings: list[
         FindingResponse
     ]
+
+
+ErrorCode = Literal[
+    "invalid_request",
+    "path_outside_scan_root",
+    "project_not_found",
+    "invalid_project_path",
+    "invalid_configuration",
+    "scan_execution_failed",
+    "internal_error",
+]
+
+
+class ErrorDetail(BaseModel):
+    code: ErrorCode
+    message: str
+
+
+class ErrorResponse(BaseModel):
+    """
+    Stable API error envelope.
+
+    Internal exceptions, request bodies, and
+    host filesystem details are intentionally
+    excluded.
+    """
+
+    error: ErrorDetail

@@ -2,14 +2,27 @@ from pathlib import Path
 
 from fastapi import (
     FastAPI,
-    HTTPException,
+    Request,
+)
+from fastapi.exceptions import (
+    RequestValidationError,
+)
+from fastapi.responses import (
+    JSONResponse,
 )
 
 from leakguard.api.schemas import (
+    ErrorDetail,
+    ErrorResponse,
     HealthResponse,
     ScanRequest,
     ScanResponse,
     SeverityCounts,
+)
+from leakguard.api.security import (
+    ApiPathBoundaryError,
+    get_api_scan_root,
+    resolve_api_project_path,
 )
 from leakguard.service import (
     ProjectPathNotFoundError,
@@ -25,10 +38,88 @@ SERVICE_VERSION = "0.1.0"
 API_VERSION = "v1"
 
 
-def create_app() -> FastAPI:
+SCAN_ERROR_RESPONSES = {
+    400: {
+        "model": ErrorResponse,
+        "description": (
+            "Invalid project path or "
+            "LeakGuard configuration."
+        ),
+    },
+    403: {
+        "model": ErrorResponse,
+        "description": (
+            "Requested path is outside the "
+            "configured API scan root."
+        ),
+    },
+    404: {
+        "model": ErrorResponse,
+        "description": (
+            "Requested project does not exist."
+        ),
+    },
+    409: {
+        "model": ErrorResponse,
+        "description": (
+            "The requested scan cannot run "
+            "in the current project state."
+        ),
+    },
+    422: {
+        "model": ErrorResponse,
+        "description": (
+            "Request validation failed."
+        ),
+    },
+    500: {
+        "model": ErrorResponse,
+        "description": (
+            "Unexpected internal failure."
+        ),
+    },
+}
+
+
+def build_error_response(
+    *,
+    status_code: int,
+    code: str,
+    message: str,
+) -> JSONResponse:
+    """
+    Build the stable, non-sensitive API error
+    envelope.
+    """
+
+    payload = ErrorResponse(
+        error=ErrorDetail(
+            code=code,
+            message=message,
+        )
+    )
+
+    return JSONResponse(
+        status_code=status_code,
+        content=payload.model_dump(),
+    )
+
+
+def create_app(
+    scan_root: Path | None = None,
+) -> FastAPI:
     """
     Build the LeakGuard AI HTTP application.
+
+    HTTP filesystem access is restricted to
+    the configured scan root.
     """
+
+    resolved_scan_root = (
+        get_api_scan_root(
+            scan_root
+        )
+    )
 
     application = FastAPI(
         title="LeakGuard AI API",
@@ -39,6 +130,126 @@ def create_app() -> FastAPI:
         version=SERVICE_VERSION,
     )
 
+    @application.exception_handler(
+        RequestValidationError
+    )
+    async def validation_error_handler(
+        request: Request,
+        error: RequestValidationError,
+    ) -> JSONResponse:
+        """
+        Do not reflect malformed request data
+        or validation internals back to HTTP
+        clients.
+        """
+
+        return build_error_response(
+            status_code=422,
+            code="invalid_request",
+            message=(
+                "Request validation failed."
+            ),
+        )
+
+    @application.exception_handler(
+        ApiPathBoundaryError
+    )
+    async def path_boundary_handler(
+        request: Request,
+        error: ApiPathBoundaryError,
+    ) -> JSONResponse:
+        return build_error_response(
+            status_code=403,
+            code="path_outside_scan_root",
+            message=(
+                "Requested project is outside "
+                "the configured API scan root."
+            ),
+        )
+
+    @application.exception_handler(
+        ProjectPathNotFoundError
+    )
+    async def project_missing_handler(
+        request: Request,
+        error: ProjectPathNotFoundError,
+    ) -> JSONResponse:
+        return build_error_response(
+            status_code=404,
+            code="project_not_found",
+            message=(
+                "Project path does not exist."
+            ),
+        )
+
+    @application.exception_handler(
+        ProjectPathTypeError
+    )
+    async def project_type_handler(
+        request: Request,
+        error: ProjectPathTypeError,
+    ) -> JSONResponse:
+        return build_error_response(
+            status_code=400,
+            code="invalid_project_path",
+            message=(
+                "Project path must be a "
+                "directory."
+            ),
+        )
+
+    @application.exception_handler(
+        ScanConfigurationError
+    )
+    async def configuration_error_handler(
+        request: Request,
+        error: ScanConfigurationError,
+    ) -> JSONResponse:
+        return build_error_response(
+            status_code=400,
+            code="invalid_configuration",
+            message=(
+                "LeakGuard configuration "
+                "could not be used safely."
+            ),
+        )
+
+    @application.exception_handler(
+        ScanExecutionError
+    )
+    async def execution_error_handler(
+        request: Request,
+        error: ScanExecutionError,
+    ) -> JSONResponse:
+        return build_error_response(
+            status_code=409,
+            code="scan_execution_failed",
+            message=(
+                "Security scan could not be "
+                "completed."
+            ),
+        )
+
+    @application.exception_handler(
+        Exception
+    )
+    async def internal_error_handler(
+        request: Request,
+        error: Exception,
+    ) -> JSONResponse:
+        """
+        Unexpected exception details are never
+        reflected to clients.
+        """
+
+        return build_error_response(
+            status_code=500,
+            code="internal_error",
+            message=(
+                "Internal server error."
+            ),
+        )
+
     @application.get(
         "/health",
         response_model=HealthResponse,
@@ -47,8 +258,8 @@ def create_app() -> FastAPI:
     )
     def health() -> HealthResponse:
         """
-        Return a minimal, non-sensitive
-        service-health response.
+        Return minimal non-sensitive service
+        health metadata.
         """
 
         return HealthResponse(
@@ -63,60 +274,36 @@ def create_app() -> FastAPI:
     @application.post(
         "/v1/scan",
         response_model=ScanResponse,
+        responses=SCAN_ERROR_RESPONSES,
         tags=["scanning"],
-        summary=(
-            "Scan a local project"
-        ),
+        summary="Scan a local project",
     )
     def scan_project(
-        request: ScanRequest,
+        scan_request: ScanRequest,
     ) -> ScanResponse:
         """
-        Run LeakGuard against a local project
-        and return structured, masked findings.
+        Run LeakGuard against a project inside
+        the configured HTTP scan boundary.
         """
 
-        try:
-            result = run_security_scan(
-                Path(
-                    request.path
+        project_path = (
+            resolve_api_project_path(
+                requested_path=(
+                    scan_request.path
                 ),
-                staged=request.staged,
-                ml_advisory_override=(
-                    request.ml_advisory
+                scan_root=(
+                    resolved_scan_root
                 ),
             )
+        )
 
-        except (
-            ProjectPathNotFoundError
-        ) as error:
-            raise HTTPException(
-                status_code=404,
-                detail=str(
-                    error
-                ),
-            ) from error
-
-        except (
-            ProjectPathTypeError
-        ) as error:
-            raise HTTPException(
-                status_code=400,
-                detail=str(
-                    error
-                ),
-            ) from error
-
-        except (
-            ScanConfigurationError,
-            ScanExecutionError,
-        ) as error:
-            raise HTTPException(
-                status_code=400,
-                detail=str(
-                    error
-                ),
-            ) from error
+        result = run_security_scan(
+            project_path,
+            staged=scan_request.staged,
+            ml_advisory_override=(
+                scan_request.ml_advisory
+            ),
+        )
 
         return ScanResponse(
             mode=result.mode,
