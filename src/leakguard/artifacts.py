@@ -11,6 +11,10 @@ from leakguard.candidate import (
 from leakguard.dotenv import (
     extract_dotenv_assignment,
 )
+from leakguard.ignore import (
+    is_ignored,
+    load_ignore_patterns,
+)
 from leakguard.masking import mask_secret
 from leakguard.scan_safety import (
     build_scan_limitation_finding,
@@ -125,17 +129,24 @@ def is_supported_artifact_file(
     )
 
 
+
 def discover_artifact_files(
     root: Path,
 ) -> list[Path]:
     """
-    Discover supported files under known
-    application build-output directories.
+    Discover supported build artifacts while
+    respecting project-local ignore rules.
 
     Discovery is deterministic.
     """
 
     root = root.resolve()
+
+    ignore_patterns = (
+        load_ignore_patterns(
+            root
+        )
+    )
 
     discovered: set[Path] = set()
 
@@ -156,6 +167,13 @@ def discover_artifact_files(
             if not path.is_file():
                 continue
 
+            if is_ignored(
+                path=path,
+                root=root,
+                patterns=ignore_patterns,
+            ):
+                continue
+
             if not is_supported_artifact_file(
                 path
             ):
@@ -174,20 +192,22 @@ def discover_artifact_files(
         ),
     )
 
-
 def discover_dotenv_sources(
     root: Path,
 ) -> list[Path]:
     """
-    Discover supported dotenv files anywhere
-    inside the project while excluding common
-    dependency/internal directories.
-
-    This supports ordinary projects and simple
-    monorepo layouts.
+    Discover supported dotenv sources while
+    respecting dependency exclusions and
+    project-local ignore rules.
     """
 
     root = root.resolve()
+
+    ignore_patterns = (
+        load_ignore_patterns(
+            root
+        )
+    )
 
     skipped_directories = {
         ".git",
@@ -215,6 +235,13 @@ def discover_dotenv_sources(
         ):
             continue
 
+        if is_ignored(
+            path=path,
+            root=root,
+            patterns=ignore_patterns,
+        ):
+            continue
+
         if (
             path.name
             not in DOTENV_SOURCE_FILES
@@ -237,19 +264,47 @@ def discover_dotenv_sources(
         ),
     )
 
-
 def _read_safe_text(
     path: Path,
 ) -> tuple[str | None, dict | None]:
     """
-    Read one text file using LeakGuard's
-    existing bounded-size and binary safety
-    policy.
+    Read bounded text without following
+    symbolic links.
 
-    On incomplete coverage, return a
-    fail-closed finding instead of silently
-    skipping the file.
+    Coverage limitations fail closed rather
+    than silently skipping content.
     """
+
+    try:
+        is_symbolic_link = (
+            path.is_symlink()
+        )
+
+    except OSError:
+        return (
+            None,
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "File metadata could not "
+                    "be inspected safely during "
+                    "artifact analysis."
+                ),
+            ),
+        )
+
+    if is_symbolic_link:
+        return (
+            None,
+            build_scan_limitation_finding(
+                path=path,
+                reason=(
+                    "Symbolic links are not "
+                    "followed during artifact "
+                    "security scans."
+                ),
+            ),
+        )
 
     try:
         size_bytes = (
@@ -335,6 +390,115 @@ def _read_safe_text(
         None,
     )
 
+def build_dotenv_secret_inventory_from_content(
+    source_file: Path,
+    content: str,
+    seen_raw_values: set[str] | None = None,
+) -> list[SecretInventoryItem]:
+    """
+    Build secret inventory entries from text
+    already supplied by the caller.
+
+    This allows both working-tree and staged
+    scanners to use the same qualification
+    policy without rereading another version
+    of the file from disk.
+    """
+
+    if seen_raw_values is None:
+        seen_raw_values = set()
+
+    inventory = []
+
+    for line in content.splitlines():
+        assignment = (
+            extract_dotenv_assignment(
+                line
+            )
+        )
+
+        if assignment is None:
+            continue
+
+        variable_name = assignment[
+            "variable_name"
+        ]
+
+        raw_value = assignment[
+            "value"
+        ]
+
+        if not raw_value:
+            continue
+
+        if (
+            len(raw_value)
+            < MIN_PROPAGATED_SECRET_LENGTH
+        ):
+            continue
+
+        analysis = analyze_candidate(
+            variable_name=variable_name,
+            value=raw_value,
+        )
+
+        sensitive_name = (
+            has_sensitive_name(
+                variable_name
+            )
+        )
+
+        if not (
+            sensitive_name
+            or analysis[
+                "is_suspicious"
+            ]
+        ):
+            continue
+
+        if raw_value in seen_raw_values:
+            continue
+
+        seen_raw_values.add(
+            raw_value
+        )
+
+        reasons = list(
+            analysis[
+                "reasons"
+            ]
+        )
+
+        if (
+            sensitive_name
+            and (
+                "Sensitive variable name"
+                not in reasons
+            )
+        ):
+            reasons.insert(
+                0,
+                "Sensitive variable name",
+            )
+
+        inventory.append(
+            SecretInventoryItem(
+                source_file=source_file,
+                variable_name=variable_name,
+                candidate_score=(
+                    analysis[
+                        "score"
+                    ]
+                ),
+                reasons=tuple(
+                    reasons
+                ),
+                raw_value=raw_value,
+            )
+        )
+
+    return inventory
+
 
 def collect_dotenv_secret_inventory(
     root: Path,
@@ -343,20 +507,8 @@ def collect_dotenv_secret_inventory(
     list[dict],
 ]:
     """
-    Build an in-memory inventory of secret-like
-    dotenv values.
-
-    A value is eligible when:
-    - its variable name is security-sensitive,
-      or
-    - the existing deterministic candidate
-      heuristic marks it suspicious.
-
-    Very short values are excluded from exact
-    substring propagation matching to limit
-    accidental artifact false positives.
-
-    Raw values never enter findings.
+    Build an in-memory inventory from safe,
+    non-ignored working-tree dotenv files.
     """
 
     root = root.resolve()
@@ -385,103 +537,20 @@ def collect_dotenv_secret_inventory(
 
         assert content is not None
 
-        for line in content.splitlines():
-            assignment = (
-                extract_dotenv_assignment(
-                    line
-                )
+        inventory.extend(
+            build_dotenv_secret_inventory_from_content(
+                source_file=source_file,
+                content=content,
+                seen_raw_values=(
+                    seen_raw_values
+                ),
             )
-
-            if assignment is None:
-                continue
-
-            variable_name = assignment[
-                "variable_name"
-            ]
-
-            raw_value = assignment[
-                "value"
-            ]
-
-            if not raw_value:
-                continue
-
-            if (
-                len(raw_value)
-                < MIN_PROPAGATED_SECRET_LENGTH
-            ):
-                continue
-
-            analysis = analyze_candidate(
-                variable_name=variable_name,
-                value=raw_value,
-            )
-
-            sensitive_name = (
-                has_sensitive_name(
-                    variable_name
-                )
-            )
-
-            if not (
-                sensitive_name
-                or analysis[
-                    "is_suspicious"
-                ]
-            ):
-                continue
-
-            if raw_value in seen_raw_values:
-                continue
-
-            seen_raw_values.add(
-                raw_value
-            )
-
-            reasons = list(
-                analysis[
-                    "reasons"
-                ]
-            )
-
-            if (
-                sensitive_name
-                and (
-                    "Sensitive variable name"
-                    not in reasons
-                )
-            ):
-                reasons.insert(
-                    0,
-                    "Sensitive variable name",
-                )
-
-            inventory.append(
-                SecretInventoryItem(
-                    source_file=(
-                        source_file
-                    ),
-                    variable_name=(
-                        variable_name
-                    ),
-                    candidate_score=(
-                        analysis[
-                            "score"
-                        ]
-                    ),
-                    reasons=tuple(
-                        reasons
-                    ),
-                    raw_value=raw_value,
-                )
-            )
+        )
 
     return (
         inventory,
         limitations,
     )
-
-
 def _find_line_number(
     content: str,
     start_index: int,
