@@ -26,6 +26,7 @@ from leakguard.staged import (
     GitStagedScanError,
     scan_staged_path,
 )
+from leakguard.version import __version__
 
 
 app = typer.Typer(
@@ -68,7 +69,7 @@ def version():
     console.print(
         Panel.fit(
             "[bold cyan]LeakGuard AI[/bold cyan]\n"
-            "[white]Version 0.1.0[/white]\n\n"
+            f"[white]Version {__version__}[/white]\n\n"
             "[dim]"
             "Code fast with AI. "
             "Ship without leaking secrets."

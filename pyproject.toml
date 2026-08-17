@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "leakguard-ai"
-version = "0.1.0"
+dynamic = ["version"]
 description = "AI-powered security gate for detecting secret leaks in vibe-coded applications."
 requires-python = ">=3.11"
 
@@ -27,6 +27,11 @@ dev = [
 
 [project.scripts]
 leakguard = "leakguard.cli:app"
+leakguard-api = "leakguard.runtime:run_api"
+leakguard-ui = "leakguard.runtime:run_ui"
+
+[tool.setuptools.dynamic]
+version = {attr = "leakguard.version.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]

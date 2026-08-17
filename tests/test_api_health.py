@@ -3,6 +3,7 @@ from fastapi.testclient import (
 )
 
 from leakguard.api.app import app
+from leakguard.version import __version__
 
 
 client = TestClient(
@@ -21,7 +22,7 @@ def test_health_endpoint():
         "status": "ok",
         "service": "leakguard-ai",
         "api_version": "v1",
-        "service_version": "0.1.0",
+        "service_version": __version__,
     }
 
 
@@ -41,7 +42,7 @@ def test_openapi_contract_exposes_health():
 
     assert (
         schema["info"]["version"]
-        == "0.1.0"
+        == __version__
     )
 
     assert "/health" in (

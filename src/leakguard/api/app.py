@@ -31,10 +31,11 @@ from leakguard.service import (
     ScanExecutionError,
     run_security_scan,
 )
+from leakguard.version import __version__
 
 
 SERVICE_NAME = "leakguard-ai"
-SERVICE_VERSION = "0.1.0"
+SERVICE_VERSION = __version__
 API_VERSION = "v1"
 
 
