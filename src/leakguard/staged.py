@@ -2,6 +2,13 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from leakguard.artifacts import (
+    DOTENV_SOURCE_FILES,
+    build_dotenv_secret_inventory_from_content,
+    is_artifact_path,
+    is_supported_artifact_file,
+    scan_artifact_content,
+)
 from leakguard.ignore import (
     load_ignore_patterns,
 )
@@ -58,7 +65,6 @@ def run_git_command(
         ) from error
 
     if result.returncode != 0:
-
         error_message = (
             result.stderr.decode(
                 "utf-8",
@@ -79,12 +85,6 @@ def get_staged_files(
 ) -> list[Path]:
     """
     Return files currently staged for commit.
-
-    Added, copied, modified and renamed files
-    are included.
-
-    Deleted files are ignored because there is
-    no staged content left to scan.
     """
 
     output = run_git_command(
@@ -103,18 +103,15 @@ def get_staged_files(
     for raw_path in output.split(
         b"\0"
     ):
-
         if not raw_path:
             continue
 
-        relative_path = raw_path.decode(
-            "utf-8",
-            errors="surrogateescape",
-        )
-
         staged_files.append(
             Path(
-                relative_path
+                raw_path.decode(
+                    "utf-8",
+                    errors="surrogateescape",
+                )
             )
         )
 
@@ -125,12 +122,8 @@ def get_staged_index_modes(
     root: Path,
 ) -> dict[str, str]:
     """
-    Return Git index modes keyed by their
-    project-relative POSIX paths.
-
-    Git mode allows LeakGuard to distinguish
-    regular staged blobs from symbolic links
-    and other non-regular index entries.
+    Return Git index modes keyed by
+    project-relative POSIX path.
     """
 
     output = run_git_command(
@@ -147,7 +140,6 @@ def get_staged_index_modes(
     for record in output.split(
         b"\0"
     ):
-
         if not record:
             continue
 
@@ -167,17 +159,13 @@ def get_staged_index_modes(
 
         fields = metadata.split()
 
-        if len(
-            fields
-        ) != 3:
+        if len(fields) != 3:
             raise GitStagedScanError(
                 "Git returned malformed "
                 "index metadata."
             )
 
-        raw_mode, _, raw_stage = (
-            fields
-        )
+        raw_mode, _, raw_stage = fields
 
         if raw_stage != b"0":
             raise GitStagedScanError(
@@ -215,17 +203,11 @@ def get_staged_file_size(
     relative_path: Path,
 ) -> int:
     """
-    Ask Git for the staged blob size without
-    loading the blob content.
-
-    This occurs before git show so oversized
-    staged files cannot force LeakGuard to
-    buffer their complete contents first.
+    Read staged blob size before loading it.
     """
 
     git_path = (
-        relative_path
-        .as_posix()
+        relative_path.as_posix()
     )
 
     output = run_git_command(
@@ -260,21 +242,13 @@ def read_staged_file_bytes(
 ) -> bytes:
     """
     Read the exact staged blob as bytes.
-
-    Callers must validate index mode and
-    staged size before invoking this function.
     """
-
-    git_path = (
-        relative_path
-        .as_posix()
-    )
 
     return run_git_command(
         root,
         [
             "show",
-            f":{git_path}",
+            f":{relative_path.as_posix()}",
         ],
     )
 
@@ -284,20 +258,13 @@ def read_staged_file(
     relative_path: Path,
 ) -> str:
     """
-    Backward-compatible text reader for
-    staged file content.
+    Backward-compatible staged text reader.
     """
 
-    content = (
-        read_staged_file_bytes(
-            root=root,
-            relative_path=(
-                relative_path
-            ),
-        )
-    )
-
-    return content.decode(
+    return read_staged_file_bytes(
+        root=root,
+        relative_path=relative_path,
+    ).decode(
         "utf-8",
         errors="ignore",
     )
@@ -308,28 +275,26 @@ def scan_staged_path(
     ml_advisory_runtime: Any | None = None,
 ) -> tuple[int, list[dict]]:
     """
-    Scan only content currently staged
-    for the next Git commit.
+    Scan the exact content staged for the next
+    Git commit.
 
-    Supported staged blobs are validated for:
-    - project path scope
-    - ignore rules
-    - Git index file mode
-    - size
-    - binary content
+    Source findings use staged source blobs.
 
-    Non-regular supported entries fail closed.
+    Artifact propagation uses only:
+    staged dotenv values
+        versus
+    staged artifact content.
+
+    Working-tree dotenv values are never used
+    to classify staged artifacts.
     """
 
     root = root.resolve()
 
-    git_directory = (
+    if not (
         root
         / ".git"
-    )
-
-    if not git_directory.exists():
-
+    ).exists():
         raise GitStagedScanError(
             "No Git repository was found."
         )
@@ -356,10 +321,13 @@ def scan_staged_path(
     )
 
     files_scanned = 0
-    findings = []
+
+    # Records preserve deterministic staged
+    # ordering while allowing inventory to be
+    # built before artifact comparison.
+    records = []
 
     for relative_path in staged_files:
-
         absolute_path = (
             root
             / relative_path
@@ -374,14 +342,31 @@ def scan_staged_path(
         ):
             continue
 
-        if not is_supported_file(
-            absolute_path
-        ):
+        artifact_owned = (
+            is_artifact_path(
+                path=absolute_path,
+                root=root,
+            )
+        )
+
+        if artifact_owned:
+            supported = (
+                is_supported_artifact_file(
+                    absolute_path
+                )
+            )
+        else:
+            supported = (
+                is_supported_file(
+                    absolute_path
+                )
+            )
+
+        if not supported:
             continue
 
         git_path = (
-            relative_path
-            .as_posix()
+            relative_path.as_posix()
         )
 
         git_mode = (
@@ -403,14 +388,17 @@ def scan_staged_path(
             git_mode
             not in REGULAR_GIT_FILE_MODES
         ):
-
-            findings.append(
-                build_scan_limitation_finding(
-                    path=absolute_path,
-                    reason=(
-                        "Staged Git entry is "
-                        "not a regular file "
-                        f"(mode {git_mode})."
+            records.append(
+                (
+                    "limitation",
+                    absolute_path,
+                    build_scan_limitation_finding(
+                        path=absolute_path,
+                        reason=(
+                            "Staged Git entry is "
+                            "not a regular file "
+                            f"(mode {git_mode})."
+                        ),
                     ),
                 )
             )
@@ -420,9 +408,7 @@ def scan_staged_path(
         staged_size = (
             get_staged_file_size(
                 root=root,
-                relative_path=(
-                    relative_path
-                ),
+                relative_path=relative_path,
             )
         )
 
@@ -433,14 +419,19 @@ def scan_staged_path(
         )
 
         if not size_result.safe_to_scan:
-
-            findings.append(
-                build_scan_limitation_finding(
-                    path=absolute_path,
-                    reason=(
-                        size_result.reason
-                        or "Staged file could "
-                        "not be scanned safely."
+            records.append(
+                (
+                    "limitation",
+                    absolute_path,
+                    build_scan_limitation_finding(
+                        path=absolute_path,
+                        reason=(
+                            size_result.reason
+                            or (
+                                "Staged file could "
+                                "not be scanned safely."
+                            )
+                        ),
                     ),
                 )
             )
@@ -450,9 +441,7 @@ def scan_staged_path(
         raw_content = (
             read_staged_file_bytes(
                 root=root,
-                relative_path=(
-                    relative_path
-                ),
+                relative_path=relative_path,
             )
         )
 
@@ -462,17 +451,20 @@ def scan_staged_path(
             )
         )
 
-        if not (
-            content_result.safe_to_scan
-        ):
-
-            findings.append(
-                build_scan_limitation_finding(
-                    path=absolute_path,
-                    reason=(
-                        content_result.reason
-                        or "Staged file could "
-                        "not be scanned safely."
+        if not content_result.safe_to_scan:
+            records.append(
+                (
+                    "limitation",
+                    absolute_path,
+                    build_scan_limitation_finding(
+                        path=absolute_path,
+                        reason=(
+                            content_result.reason
+                            or (
+                                "Staged file could "
+                                "not be scanned safely."
+                            )
+                        ),
                     ),
                 )
             )
@@ -480,14 +472,103 @@ def scan_staged_path(
             continue
 
         content = raw_content.decode(
-            "utf-8",
+            "utf-8-sig",
             errors="ignore",
         )
+
+        record_type = (
+            "artifact"
+            if artifact_owned
+            else "source"
+        )
+
+        records.append(
+            (
+                record_type,
+                absolute_path,
+                content,
+            )
+        )
+
+    # ======================================
+    # Build inventory only from staged envs
+    # ======================================
+
+    inventory = []
+    seen_raw_values: set[str] = set()
+
+    for (
+        record_type,
+        absolute_path,
+        payload,
+    ) in records:
+        if record_type != "source":
+            continue
+
+        if (
+            absolute_path.name
+            not in DOTENV_SOURCE_FILES
+        ):
+            continue
+
+        assert isinstance(
+            payload,
+            str,
+        )
+
+        inventory.extend(
+            build_dotenv_secret_inventory_from_content(
+                source_file=absolute_path,
+                content=payload,
+                seen_raw_values=(
+                    seen_raw_values
+                ),
+            )
+        )
+
+    # ======================================
+    # Emit deterministic findings
+    # ======================================
+
+    findings = []
+
+    for (
+        record_type,
+        absolute_path,
+        payload,
+    ) in records:
+        if record_type == "limitation":
+            assert isinstance(
+                payload,
+                dict,
+            )
+
+            findings.append(
+                payload
+            )
+
+            continue
+
+        assert isinstance(
+            payload,
+            str,
+        )
+
+        if record_type == "artifact":
+            findings.extend(
+                scan_artifact_content(
+                    path=absolute_path,
+                    content=payload,
+                    inventory=inventory,
+                )
+            )
+
+            continue
 
         findings.extend(
             scan_content(
                 path=absolute_path,
-                content=content,
+                content=payload,
                 ml_advisory_runtime=(
                     ml_advisory_runtime
                 ),
