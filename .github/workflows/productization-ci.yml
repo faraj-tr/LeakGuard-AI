@@ -194,8 +194,7 @@ jobs:
           mkdir -p /tmp/leakguard-ci-workspace
           mkdir -p /tmp/leakguard-ci-models
 
-          printf '%s
-' 'message = "safe"'             > /tmp/leakguard-ci-workspace/app.py
+          echo 'message = "safe"' > /tmp/leakguard-ci-workspace/app.py
 
       - name: Start hardened container
         shell: bash

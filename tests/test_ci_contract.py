@@ -175,3 +175,14 @@ def test_container_ci_verifies_api_and_dashboard():
         "docker rm -f leakguard-ci"
         in text
     )
+
+
+def test_container_ci_prepares_safe_workspace_fixture():
+    text = read_workflow(
+        "productization-ci.yml"
+    )
+
+    assert (
+        """echo 'message = "safe"'"""
+        in text
+    )
