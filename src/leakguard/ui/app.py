@@ -24,6 +24,7 @@ from leakguard.ui.components import (
 from leakguard.ui.styles import (
     inject_global_styles,
 )
+from leakguard.ui.results_preview import inject_results_preview
 from leakguard.ui.workflow import (
     DashboardPayloadError,
     ScanView,
@@ -280,6 +281,7 @@ def main() -> None:
 
     inject_global_styles()
     inject_component_styles()
+    inject_results_preview()
 
     try:
         client = build_api_client()
