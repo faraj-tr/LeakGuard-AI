@@ -15,7 +15,12 @@ clean_demo/
 # secret-like values for model training and evaluation.
 data/
 
+# End-to-end benchmark infrastructure intentionally
+# generates synthetic secret-like test fixtures.
+benchmarks/e2e/
+
 # Benchmark reports contain deterministic dataset hashes
 # and evaluation metadata, not runtime credentials.
 reports/final_benchmark_v1.json
+reports/e2e_gate_benchmark_v1.json
 reports/candidate_v2_holdout_benchmark_v1.json

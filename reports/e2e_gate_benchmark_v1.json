@@ -1,0 +1,4599 @@
+{
+  "benchmark": "LeakGuard End-to-End Security Gate Benchmark",
+  "benchmark_version": "v1",
+  "cases": [
+    {
+      "case_id": "hardcoded_password-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "hardcoded_password-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Hardcoded Password",
+      "expected_type_found": true,
+      "family": "hardcoded_password",
+      "finding_types": [
+        "Hardcoded Password"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "api_key-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "API Key",
+      "expected_type_found": true,
+      "family": "api_key",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "bearer_token-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Bearer Token",
+      "expected_type_found": true,
+      "family": "bearer_token",
+      "finding_types": [
+        "Bearer Token"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "database_credential-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Database Credential",
+      "expected_type_found": true,
+      "family": "database_credential",
+      "finding_types": [
+        "Database Credential"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "client_side_exposure-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Client-Side Secret Exposure",
+      "expected_type_found": true,
+      "family": "client_side_exposure",
+      "finding_types": [
+        "Client-Side Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "generic_secret_candidate-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Unknown Secret Candidate",
+      "expected_type_found": true,
+      "family": "generic_secret_candidate",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "artifact_propagation-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Artifact Secret Exposure",
+      "expected_type_found": true,
+      "family": "artifact_propagation",
+      "finding_types": [
+        "Artifact Secret Exposure"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "staged_secret-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-010",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-011",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-012",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-013",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-014",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-015",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-016",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-017",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-018",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "staged_secret-019",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "staged_secret",
+      "finding_types": [
+        "API Key"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_password_expression-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_password_expression-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_password_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_api_expression-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_api_expression",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_bearer_text-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_bearer_text",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_database_url-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_database_url",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_client_public-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_client_public",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-000",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-001",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-002",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-003",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-004",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-005",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-006",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-007",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-008",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-009",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-010",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-011",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-012",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-013",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-014",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-015",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-016",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-017",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-018",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_high_entropy_identifier-019",
+      "correct_gate": false,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_high_entropy_identifier",
+      "finding_types": [
+        "Unknown Secret Candidate"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_artifact_nonpropagation-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_artifact_nonpropagation",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "project"
+    },
+    {
+      "case_id": "safe_staged_change-000",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-001",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-002",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-003",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-004",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-005",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-006",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-007",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-008",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-009",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-010",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-011",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-012",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-013",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-014",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-015",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-016",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-017",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-018",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "safe_staged_change-019",
+      "correct_gate": true,
+      "expected_gate": "passed",
+      "expected_type": null,
+      "expected_type_found": null,
+      "family": "safe_staged_change",
+      "finding_types": [],
+      "findings_count": 0,
+      "predicted_gate": "passed",
+      "track": "staged"
+    },
+    {
+      "case_id": "coverage_oversized_file-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_oversized_file-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_oversized_file",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-000",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-001",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-002",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-003",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-004",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-005",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-006",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-007",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-008",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    },
+    {
+      "case_id": "coverage_binary_content-009",
+      "correct_gate": true,
+      "expected_gate": "failed",
+      "expected_type": "Scan Coverage Limitation",
+      "expected_type_found": true,
+      "family": "coverage_binary_content",
+      "finding_types": [
+        "Scan Coverage Limitation"
+      ],
+      "findings_count": 1,
+      "predicted_gate": "failed",
+      "track": "coverage"
+    }
+  ],
+  "cases_per_category": 20,
+  "corpus_sha256": "6e9baff3dd74b2be18e771519e76d6db68d30a8a81bf386c192374fa8ed7cb8e",
+  "generated_at_utc": "2026-08-18T12:05:49.033433+00:00",
+  "metrics": {
+    "false_negative_families": {},
+    "false_positive_families": {
+      "safe_high_entropy_identifier": 20
+    },
+    "per_family": {
+      "api_key": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "artifact_propagation": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "bearer_token": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "client_side_exposure": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "coverage_binary_content": {
+        "cases": 10,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "coverage_oversized_file": {
+        "cases": 10,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "database_credential": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "generic_secret_candidate": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "hardcoded_password": {
+        "cases": 20,
+        "expected_type_recall": 1.0,
+        "gate_accuracy": 1.0
+      },
+      "safe_api_expression": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_artifact_nonpropagation": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_bearer_text": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_client_public": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_database_url": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_high_entropy_identifier": {
+        "cases": 20,
+        "gate_accuracy": 0.0
+      },
+      "safe_password_expression": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "safe_staged_change": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      },
+      "staged_secret": {
+        "cases": 20,
+        "gate_accuracy": 1.0
+      }
+    },
+    "secret_detection": {
+      "accuracy": 0.9375,
+      "cases": 320,
+      "f1": 0.9411764705882353,
+      "false_negative": 0,
+      "false_negative_rate": 0.0,
+      "false_positive": 20,
+      "false_positive_rate": 0.125,
+      "precision": 0.8888888888888888,
+      "recall": 1.0,
+      "true_negative": 140,
+      "true_positive": 160
+    },
+    "security_gate": {
+      "accuracy": 0.9411764705882353,
+      "cases": 340,
+      "correct": 320,
+      "incorrect": 20
+    }
+  },
+  "ml_advisory_enabled": false,
+  "ml_authority_note": "Candidate v2 is advisory-only and cannot change gate state; its independent holdout metrics are reported separately."
+}
