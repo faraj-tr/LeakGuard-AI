@@ -10,9 +10,22 @@ from leakguard.ui.client import (
     LeakGuardApiResponseError,
     public_error_message,
 )
+from leakguard.ui.components import (
+    LOGO_PATH,
+    inject_component_styles,
+    render_api_unavailable,
+    render_brand_header,
+    render_findings as render_findings_component,
+    render_gate_summary,
+    render_page_intro,
+    render_scan_form,
+    render_sidebar,
+)
+from leakguard.ui.styles import (
+    inject_global_styles,
+)
 from leakguard.ui.workflow import (
     DashboardPayloadError,
-    ML_POLICY_CHOICES,
     ScanView,
     build_scan_view,
     resolve_ml_override,
@@ -23,6 +36,14 @@ API_URL_ENV = "LEAKGUARD_API_URL"
 
 LAST_SCAN_RESULT_KEY = (
     "leakguard_last_scan_result"
+)
+
+API_SERVICE_VERSION_KEY = (
+    "leakguard_api_service_version"
+)
+
+SIDEBAR_SCAN_FLASH_KEY = (
+    "leakguard_sidebar_scan_flash"
 )
 
 
@@ -41,14 +62,19 @@ def build_api_client() -> LeakGuardApiClient:
     )
 
 
-def render_header() -> None:
-    st.title(
-        "LeakGuard AI"
-    )
+def render_header(
+    *,
+    api_connected: bool = False,
+    service_version: str | None = None,
+) -> None:
+    """
+    Compatibility wrapper for the redesigned
+    product header.
+    """
 
-    st.caption(
-        "Code fast with AI. "
-        "Ship without leaking secrets."
+    render_brand_header(
+        api_connected=api_connected,
+        service_version=service_version,
     )
 
 
@@ -56,14 +82,22 @@ def render_api_status(
     client: LeakGuardApiClient,
 ) -> bool:
     """
-    Display local API availability without
-    exposing host filesystem information.
+    Probe local API availability.
+
+    Successful health information is rendered
+    by the redesigned header and sidebar rather
+    than by Streamlit's default success box.
     """
 
     try:
         health = client.health()
 
     except LeakGuardApiResponseError as error:
+        st.session_state.pop(
+            API_SERVICE_VERSION_KEY,
+            None,
+        )
+
         st.error(
             "LeakGuard API health check "
             "failed."
@@ -78,6 +112,11 @@ def render_api_status(
         return False
 
     except LeakGuardApiClientError:
+        st.session_state.pop(
+            API_SERVICE_VERSION_KEY,
+            None,
+        )
+
         st.error(
             "LeakGuard API is unavailable. "
             "Start the local API service "
@@ -90,14 +129,9 @@ def render_api_status(
         "service_version"
     ]
 
-    st.success(
-        "LeakGuard API connected"
-    )
-
-    st.text(
-        "Service version: "
-        f"{service_version}"
-    )
+    st.session_state[
+        API_SERVICE_VERSION_KEY
+    ] = str(service_version)
 
     return True
 
@@ -106,66 +140,29 @@ def run_scan_from_form(
     client: LeakGuardApiClient,
 ) -> None:
     """
-    Render scan controls and submit one scan
-    through the public HTTP API.
+    Collect scan controls from the redesigned
+    UI and submit one scan through the public
+    local HTTP API.
     """
 
-    with st.form(
-        "leakguard_scan_form"
-    ):
-        project_path = st.text_input(
-            "Project path",
-            value=".",
-            help=(
-                "Path must be inside the "
-                "FastAPI scan root."
-            ),
-        )
+    submission = render_scan_form()
 
-        staged = st.checkbox(
-            "Scan staged Git content only",
-            value=False,
-            help=(
-                "Inspect the Git index instead "
-                "of working-tree content."
-            ),
-        )
-
-        ml_policy = st.selectbox(
-            "Candidate v2 ML advisory",
-            options=ML_POLICY_CHOICES,
-            index=0,
-            help=(
-                "Candidate v2 is experimental "
-                "and never has independent "
-                "blocking authority."
-            ),
-        )
-
-        submitted = (
-            st.form_submit_button(
-                "Run Security Scan"
-            )
-        )
-
-    if not submitted:
+    if submission is None:
         return
 
     normalized_path = (
-        project_path.strip()
+        submission.project_path.strip()
     )
 
     if not normalized_path:
         st.error(
-            "Project path is required."
+            "Scan path is required."
         )
 
         return
 
-    ml_override = (
-        resolve_ml_override(
-            ml_policy
-        )
+    ml_override = resolve_ml_override(
+        submission.ml_policy
     )
 
     try:
@@ -174,10 +171,8 @@ def run_scan_from_form(
         ):
             payload = client.scan(
                 path=normalized_path,
-                staged=staged,
-                ml_advisory=(
-                    ml_override
-                ),
+                staged=submission.staged,
+                ml_advisory=ml_override,
             )
 
     except LeakGuardApiResponseError as error:
@@ -221,94 +216,26 @@ def run_scan_from_form(
         LAST_SCAN_RESULT_KEY
     ] = scan_view
 
+    # One-shot UI feedback. The next rerun
+    # renders the Security Scan navigation item
+    # in green with a short pulse animation.
+    st.session_state[
+        SIDEBAR_SCAN_FLASH_KEY
+    ] = True
+
+    st.rerun()
+
 
 def render_scan_summary(
     scan_view: ScanView,
 ) -> None:
     """
-    Render gate status and aggregate metrics.
+    Compatibility wrapper around the new
+    security gate component.
     """
 
-    st.subheader(
-        "Scan Result"
-    )
-
-    if scan_view.gate == "passed":
-        st.success(
-            "Security gate passed. "
-            "No findings were reported."
-        )
-
-    else:
-        st.error(
-            "Security gate failed. "
-            "Review the findings before "
-            "shipping."
-        )
-
-    summary_columns = st.columns(
-        3
-    )
-
-    summary_columns[0].metric(
-        "Gate",
-        scan_view.gate.upper(),
-    )
-
-    summary_columns[1].metric(
-        "Files scanned",
-        scan_view.files_scanned,
-    )
-
-    summary_columns[2].metric(
-        "Findings",
-        scan_view.findings_count,
-    )
-
-    severity_columns = st.columns(
-        4
-    )
-
-    severity_columns[0].metric(
-        "Critical",
-        scan_view.severity.critical,
-    )
-
-    severity_columns[1].metric(
-        "High",
-        scan_view.severity.high,
-    )
-
-    severity_columns[2].metric(
-        "Medium",
-        scan_view.severity.medium,
-    )
-
-    severity_columns[3].metric(
-        "Low",
-        scan_view.severity.low,
-    )
-
-    mode_text = (
-        "Staged Git index"
-        if scan_view.mode == "staged"
-        else "Working project"
-    )
-
-    ml_text = (
-        "Enabled - experimental, "
-        "non-blocking"
-        if scan_view.ml_advisory_enabled
-        else "Disabled"
-    )
-
-    st.text(
-        f"Scan mode: {mode_text}"
-    )
-
-    st.text(
-        "Candidate v2 advisory: "
-        f"{ml_text}"
+    render_gate_summary(
+        scan_view
     )
 
 
@@ -316,135 +243,68 @@ def render_findings(
     scan_view: ScanView,
 ) -> None:
     """
-    Render only fields accepted by the strict
-    dashboard view model.
+    Compatibility wrapper around the new
+    findings presentation.
     """
 
-    if not scan_view.findings:
-        return
-
-    st.subheader(
-        "Findings"
+    render_findings_component(
+        scan_view
     )
 
-    st.caption(
-        "Only masked secret values are shown."
+
+def render_ready_state() -> None:
+    """
+    Render the calm pre-scan state.
+    """
+
+    st.html(
+        """
+<div class="lg-state-panel">
+    <strong>Ready for inspection.</strong>
+    Choose a scan target and run LeakGuard.
+    Processing stays behind the configured
+    local API boundary, and public finding
+    output remains masked.
+</div>
+"""
     )
-
-    for index, finding in enumerate(
-        scan_view.findings,
-        start=1,
-    ):
-        label = (
-            f"Finding {index} | "
-            f"{finding.severity}"
-        )
-
-        with st.expander(
-            label,
-            expanded=(
-                index == 1
-            ),
-        ):
-            st.text(
-                "Type: "
-                f"{finding.finding_type}"
-            )
-
-            st.text(
-                "File: "
-                f"{finding.file}"
-            )
-
-            st.text(
-                "Line: "
-                f"{finding.line}"
-            )
-
-            st.text(
-                "Masked value: "
-                f"{finding.masked_value}"
-            )
-
-            if (
-                finding.framework
-                is not None
-            ):
-                st.text(
-                    "Framework: "
-                    f"{finding.framework}"
-                )
-
-            if (
-                finding.candidate_score
-                is not None
-            ):
-                st.text(
-                    "Heuristic candidate "
-                    "score: "
-                    f"{finding.candidate_score}"
-                )
-
-            if finding.reasons:
-                st.text(
-                    "Reasons:"
-                )
-
-                for reason in (
-                    finding.reasons
-                ):
-                    st.text(
-                        f"- {reason}"
-                    )
-
-            advisory = (
-                finding.ml_advisory
-            )
-
-            if advisory is not None:
-                st.divider()
-
-                st.text(
-                    "Candidate v2 advisory"
-                )
-
-                st.text(
-                    "Prediction: "
-                    f"{advisory.prediction}"
-                )
-
-                st.text(
-                    "Risk score: "
-                    f"{advisory.risk_score:.3f}"
-                )
-
-                st.text(
-                    "Threshold: "
-                    f"{advisory.threshold:.3f}"
-                )
-
-                st.caption(
-                    "Experimental advisory "
-                    "signal only. The risk "
-                    "score is not a calibrated "
-                    "probability and does not "
-                    "have blocking authority."
-                )
 
 
 def main() -> None:
     st.set_page_config(
         page_title="LeakGuard AI",
-        page_icon="???",
+        page_icon=str(LOGO_PATH),
         layout="wide",
+        initial_sidebar_state="expanded",
     )
 
-    render_header()
+    inject_global_styles()
+    inject_component_styles()
 
     try:
         client = build_api_client()
 
     except LeakGuardApiConfigurationError:
+        st.session_state.pop(
+            API_SERVICE_VERSION_KEY,
+            None,
+        )
+
+        st.session_state.pop(
+            LAST_SCAN_RESULT_KEY,
+            None,
+        )
+
+        render_sidebar(
+            api_connected=False,
+        )
+
+        render_header(
+            api_connected=False,
+        )
+
+        render_page_intro()
+
         st.error(
             "LeakGuard API URL configuration "
             "is unsafe."
@@ -457,17 +317,43 @@ def main() -> None:
 
         return
 
-    api_available = (
-        render_api_status(
-            client
+    api_available = render_api_status(
+        client
+    )
+
+    service_version = (
+        st.session_state.get(
+            API_SERVICE_VERSION_KEY
         )
     )
 
-    st.divider()
-
-    st.subheader(
-        "Security Scan"
+    sidebar_scan_flash = bool(
+        st.session_state.pop(
+            SIDEBAR_SCAN_FLASH_KEY,
+            False,
+        )
     )
+
+    render_sidebar(
+        api_connected=api_available,
+        scan_recently_run=(
+            sidebar_scan_flash
+        ),
+    )
+
+    render_header(
+        api_connected=api_available,
+        service_version=(
+            service_version
+            if isinstance(
+                service_version,
+                str,
+            )
+            else None
+        ),
+    )
+
+    render_page_intro()
 
     if not api_available:
         st.session_state.pop(
@@ -475,18 +361,9 @@ def main() -> None:
             None,
         )
 
-        st.info(
-            "Scanning controls will become "
-            "available when the local API "
-            "service is running."
-        )
+        render_api_unavailable()
 
         return
-
-    st.caption(
-        "The HTTP API restricts scanning to "
-        "its configured scan root."
-    )
 
     run_scan_from_form(
         client
@@ -502,8 +379,6 @@ def main() -> None:
         scan_view,
         ScanView,
     ):
-        st.divider()
-
         render_scan_summary(
             scan_view
         )
@@ -511,6 +386,9 @@ def main() -> None:
         render_findings(
             scan_view
         )
+
+    else:
+        render_ready_state()
 
 
 if __name__ == "__main__":
