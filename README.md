@@ -8,8 +8,174 @@ It combines deterministic detection, contextual heuristics, build-artifact propa
 
 ---
 
+## Quick Install
+
+Want to try LeakGuard AI right now? Pick the fastest path for you.
+
+| I want to... | Use this |
+|---|---|
+| See LeakGuard working in my browser | **Browser Demo with Docker** |
+| Try the scanner from a terminal | **CLI Demo with Python** |
+| Use the browser without Docker | **Local API + Dashboard** |
+
+> The included `demo_project` uses synthetic fake credentials only. You do not need real secrets to test LeakGuard.
+
+### Option 1 — Browser Demo with Docker
+
+**The fastest way to see LeakGuard working.**
+
+Requirements:
+
+- Git
+- Docker Desktop or Docker Engine with Compose
+
+Clone the official release:
+
+```bash
+git clone --branch v0.1.0 --depth 1 https://github.com/faraj-tr/LeakGuard-AI.git
+cd LeakGuard-AI
+```
+
+Start LeakGuard:
+
+```bash
+docker compose up --build
+```
+
+When the container is ready, open:
+
+```text
+http://127.0.0.1:8501
+```
+
+In the dashboard:
+
+1. Leave **Scan target** set to **Project**.
+2. Enter this in **Scan path**:
+
+```text
+demo_project
+```
+
+3. Click **Run Security Scan**.
+
+You should see LeakGuard detect the synthetic secret exposure and return a failed security gate with masked findings.
+
+To stop the demo, return to the terminal and press:
+
+```text
+Ctrl+C
+```
+
+### Option 2 — CLI Demo with Python
+
+Requirements:
+
+- Git
+- Python 3.11 or newer
+
+Clone the official release:
+
+```bash
+git clone --branch v0.1.0 --depth 1 https://github.com/faraj-tr/LeakGuard-AI.git
+cd LeakGuard-AI
+```
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Or on Linux/macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Install LeakGuard:
+
+```bash
+python -m pip install .
+```
+
+Verify it:
+
+```bash
+leakguard version
+```
+
+Run the included demo:
+
+```bash
+leakguard scan demo_project
+```
+
+You should see LeakGuard detect synthetic secret exposure and fail the security gate.
+
+To scan your own project, go to that project directory and run:
+
+```bash
+leakguard scan .
+```
+
+### Option 3 — Browser Demo without Docker
+
+Complete the Python installation from **Option 2** first.
+
+From the LeakGuard repository directory, start the API in one terminal:
+
+```bash
+leakguard-api
+```
+
+Keep that terminal running.
+
+Open a second terminal, activate the same virtual environment, then start the dashboard:
+
+```bash
+leakguard-ui
+```
+
+Open:
+
+```text
+http://127.0.0.1:8501
+```
+
+Enter:
+
+```text
+demo_project
+```
+
+in **Scan path**, then click **Run Security Scan**.
+
+The dashboard communicates with the local FastAPI service, and HTTP scans are restricted to the configured local scan root.
+
+### What Should I See?
+
+A clean project should produce:
+
+```text
+Security scan passed.
+```
+
+The included demo should produce a failed gate with one or more masked findings.
+
+**Never use real credentials just to test LeakGuard. The included demo is already safe to use.**
+
+---
+
 ## Table of Contents
 
+- [Quick Install](#quick-install)
 - [Why LeakGuard Exists](#why-leakguard-exists)
 - [What LeakGuard Detects](#what-leakguard-detects)
 - [Security Philosophy](#security-philosophy)
